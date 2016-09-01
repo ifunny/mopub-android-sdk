@@ -10,6 +10,7 @@ import com.mopub.common.util.AsyncTasks;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -109,7 +110,8 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
             try {
                 // If redirectUrl is a relative path, then resolve() will correctly complete the path;
                 // otherwise, resolve() will return the redirectUrl
-                result =  baseUri.resolve(redirectUrl).toString();
+                String encodedRedirectUrl = encodeUriParameters(redirectUrl);
+                result = baseUri.resolve(encodedRedirectUrl).toString();
             } catch (IllegalArgumentException e) {
                 // Ensure the request is cancelled instead of resolving an intermediary URL
                 throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
@@ -135,6 +137,20 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
         super.onCancelled();
 
         mListener.onFailure("Task for resolving url was cancelled", null);
+    }
+
+    private static String encodeUriParameters(String locationUrl) {
+        URL url;
+        URI uri;
+        try {
+            url = new URL(locationUrl);
+            uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+        } catch (MalformedURLException e) {
+            return null;
+        } catch (URISyntaxException e) {
+            return null;
+        }
+        return uri.toString();
     }
 }
 
