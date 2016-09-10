@@ -1,6 +1,6 @@
 package com.mopub.nativeads;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,8 @@ import static android.view.View.VISIBLE;
  * static and video native ads. This will automatically replace the main image view with the
  * Facebook MediaView that handles showing the main asset.
  */
-public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.FacebookVideoEnabledNativeAd> {
+public class FacebookAdRenderer
+        implements MoPubAdRenderer<com.mopub.nativeads.FacebookNative.FacebookVideoEnabledNativeAd> {
     private final ViewBinder mViewBinder;
 
     // This is used instead of View.setTag, which causes a memory leak in 2.3
@@ -38,9 +39,9 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
     }
 
     @Override
-    public View createAdView(final Activity activity, final ViewGroup parent) {
+    public View createAdView(final Context context, final ViewGroup parent) {
         final View adView = LayoutInflater
-                .from(activity)
+                .from(context)
                 .inflate(mViewBinder.layoutId, parent, false);
         final View mainImageView = adView.findViewById(mViewBinder.mainImageId);
         if (mainImageView == null) {
@@ -72,7 +73,7 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
             mainImageView.setVisibility(View.GONE);
         }
 
-        final MediaView mediaView = new MediaView(activity);
+        final MediaView mediaView = new MediaView(context);
         ViewGroup mainImageParent = (ViewGroup) mainImageView.getParent();
         int mainImageIndex = mainImageParent.indexOfChild(mainImageView);
         mainImageParent.addView(mediaView, mainImageIndex + 1, mediaViewLayoutParams);
@@ -81,7 +82,7 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
 
     @Override
     public void renderAdView(final View view,
-            final FacebookNative.FacebookVideoEnabledNativeAd facebookVideoEnabledNativeAd) {
+            final com.mopub.nativeads.FacebookNative.FacebookVideoEnabledNativeAd facebookVideoEnabledNativeAd) {
         FacebookNativeViewHolder facebookNativeViewHolder = mViewHolderMap.get(view);
         if (facebookNativeViewHolder == null) {
             facebookNativeViewHolder = FacebookNativeViewHolder.fromViewBinder(view, mViewBinder);
@@ -98,11 +99,11 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
     @Override
     public boolean supports(final BaseNativeAd nativeAd) {
         Preconditions.checkNotNull(nativeAd);
-        return nativeAd instanceof FacebookNative.FacebookVideoEnabledNativeAd;
+        return nativeAd instanceof com.mopub.nativeads.FacebookNative.FacebookVideoEnabledNativeAd;
     }
 
     private void update(final FacebookNativeViewHolder facebookNativeViewHolder,
-            final FacebookNative.FacebookVideoEnabledNativeAd nativeAd) {
+            final com.mopub.nativeads.FacebookNative.FacebookVideoEnabledNativeAd nativeAd) {
         final ImageView mainImageView = facebookNativeViewHolder.getMainImageView();
         NativeRendererHelper.addTextView(facebookNativeViewHolder.getTitleView(),
                 nativeAd.getTitle());
