@@ -106,7 +106,7 @@ public abstract class BaseNativeAd {
 		if (mNativeEventListener != null) {
 			mNativeEventListener.onAdImpressed();
 		}
-		NativeAdEventsObserver.instance().onAdImpressed(eventNative.getNativeAdType());
+		NativeAdEventsObserver.instance().onAdImpressed(eventNative.getNativeAdType(), eventNative.getTierName());
 	}
 
 	/**
@@ -118,7 +118,7 @@ public abstract class BaseNativeAd {
 		if (mNativeEventListener != null) {
 			mNativeEventListener.onAdClicked();
 		}
-		NativeAdEventsObserver.instance().onAdClicked(eventNative.getNativeAdType());
+		NativeAdEventsObserver.instance().onAdClicked(eventNative.getNativeAdType(), eventNative.getTierName());
 	}
 
 

@@ -1,12 +1,14 @@
 package com.mopub.nativeads;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.mopub.nativeads.events.NativeAdEventsObserver;
 import com.mopub.nativeads.events.NativeAdType;
 
 import java.util.Map;
+
 
 /**
  * {@code CustomEventNative} is a base class for custom events that support native ads. By
@@ -20,6 +22,7 @@ public abstract class CustomEventNative {
 
     private CustomEventNative.CustomEventNativeListener mCustomEventNativeListener;
     private NativeAdType mNativeAdType = NativeAdType.Mopub;
+    protected String tierName;
 
     /**
      * When the MoPub SDK receives a response indicating it should load a custom event, it will send
@@ -37,10 +40,15 @@ public abstract class CustomEventNative {
      * that you want to associate with a given custom event request. This data may be used to pass
      * dynamic information, such as publisher IDs, without changes in application code.
      */
-    protected abstract void loadNativeAd(@NonNull final Context context,
+    @CallSuper
+    protected void loadNativeAd(@NonNull final Context context,
             @NonNull final CustomEventNativeListener customEventNativeListener,
             @NonNull final Map<String, Object> localExtras,
-            @NonNull final Map<String, String> serverExtras);
+            @NonNull final Map<String, String> serverExtras){
+        if (serverExtras != null){
+            tierName = serverExtras.get("name");
+        }
+    }
 
     public interface CustomEventNativeListener {
         /**
@@ -73,7 +81,7 @@ public abstract class CustomEventNative {
 
     protected final void notifyAdLoaded(BaseNativeAd baseNativeAd) {
         mCustomEventNativeListener.onNativeAdLoaded(baseNativeAd);
-        NativeAdEventsObserver.instance().onAdLoaded(mNativeAdType);
+        NativeAdEventsObserver.instance().onAdLoaded(mNativeAdType, getTierName());
     }
 
     protected final void notifyLoadFailed(NativeErrorCode errorCode){
@@ -81,7 +89,7 @@ public abstract class CustomEventNative {
     }
 
     protected final void notifyAdRequested() {
-        NativeAdEventsObserver.instance().onAdRequested(mNativeAdType);
+        NativeAdEventsObserver.instance().onAdRequested(mNativeAdType, getTierName());
     }
 
     public NativeAdType getNativeAdType() {
@@ -90,5 +98,9 @@ public abstract class CustomEventNative {
 
     public void setNativeAdType(NativeAdType nativeAdType) {
         mNativeAdType = nativeAdType;
+    }
+
+    public String getTierName() {
+        return tierName;
     }
 }

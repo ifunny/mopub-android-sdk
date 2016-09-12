@@ -34,27 +34,27 @@ public class NativeAdEventsObserver {
 		listeners.remove(listener);
 	}
 
-	public void onAdClicked(NativeAdType adType) {
+	public void onAdClicked(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdClicked(adType);
+			listener.onNativeAdClicked(adType, tierName);
 		}
 	}
 
-	public void onAdImpressed(NativeAdType adType) {
+	public void onAdImpressed(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdImpressed(adType);
+			listener.onNativeAdImpressed(adType, tierName);
 		}
 	}
 
-	public void onAdRequested(NativeAdType adType) {
+	public void onAdRequested(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdRequested(adType);
+			listener.onNativeAdRequested(adType, tierName);
 		}
 	}
 
-	public void onAdLoaded(NativeAdType adType) {
+	public void onAdLoaded(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdLoadSuccess(adType);
+			listener.onNativeAdLoadSuccess(adType, tierName);
 		}
 	}
 }

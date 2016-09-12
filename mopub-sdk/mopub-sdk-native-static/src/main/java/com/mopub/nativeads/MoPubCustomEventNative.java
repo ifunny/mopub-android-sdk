@@ -32,6 +32,7 @@ public class MoPubCustomEventNative extends CustomEventNative {
             @NonNull final CustomEventNativeListener customEventNativeListener,
             @NonNull final Map<String, Object> localExtras,
             @NonNull final Map<String, String> serverExtras) {
+        super.loadNativeAd(context, customEventNativeListener, localExtras, serverExtras);
         setCustomEventNativeListener(customEventNativeListener);
         setNativeAdType(NativeAdType.Mopub);
 
