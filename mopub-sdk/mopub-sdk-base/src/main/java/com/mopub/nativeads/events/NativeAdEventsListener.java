@@ -11,4 +11,6 @@ public interface NativeAdEventsListener {
 	void onNativeAdRequested(NativeAdType adType, String tierName);
 
 	void onNativeAdLoadSuccess(NativeAdType adType, String tierName);
+
+	void onNativeAdCanceledByTimeout(NativeAdType adType, String tierName);
 }

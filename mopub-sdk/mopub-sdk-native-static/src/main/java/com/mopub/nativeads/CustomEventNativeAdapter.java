@@ -104,6 +104,8 @@ final class CustomEventNativeAdapter {
         private void cancelEvent(){
             if (runningEvents.containsKey(this)){
                 listener.onNativeAdFailed(NativeErrorCode.NETWORK_TIMEOUT);
+                CustomEventNative customEventNative = runningEvents.get(this);
+                customEventNative.cancelByTimeout();
                 runningEvents.remove(this);
             }
         }

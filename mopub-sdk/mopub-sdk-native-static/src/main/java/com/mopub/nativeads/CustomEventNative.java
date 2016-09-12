@@ -103,4 +103,8 @@ public abstract class CustomEventNative {
     public String getTierName() {
         return tierName;
     }
+
+    public void cancelByTimeout(){
+        NativeAdEventsObserver.instance().onAdCanceledByTimeout(mNativeAdType, getTierName());
+    }
 }

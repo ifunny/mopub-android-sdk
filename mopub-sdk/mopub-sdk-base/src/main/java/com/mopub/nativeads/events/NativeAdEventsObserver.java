@@ -57,4 +57,10 @@ public class NativeAdEventsObserver {
 			listener.onNativeAdLoadSuccess(adType, tierName);
 		}
 	}
+
+	public void onAdCanceledByTimeout(NativeAdType adType, String tierName) {
+		for (NativeAdEventsListener listener : listeners) {
+			listener.onNativeAdCanceledByTimeout(adType, tierName);
+		}
+	}
 }
