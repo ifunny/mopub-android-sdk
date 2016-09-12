@@ -50,9 +50,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
         mTimeout = new Runnable() {
             @Override
             public void run() {
-                MoPubLog.d("Third-party network timed out.");
-                onBannerFailed(NETWORK_TIMEOUT);
-                invalidate();
+               onBannerTimed();
             }
         };
 
@@ -150,6 +148,15 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
                 mMoPubView.trackNativeImpression();
             }
         }
+    }
+
+    private void onBannerTimed(){
+        MoPubLog.d("Third-party network timed out.");
+        onBannerFailed(NETWORK_TIMEOUT);
+        if (mMoPubView != null){
+            mMoPubView.adTimed();
+        }
+        invalidate();
     }
 
     @Override

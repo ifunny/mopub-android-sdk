@@ -28,11 +28,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static android.R.attr.banner;
 import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
 
 public class MoPubView extends FrameLayout {
     public interface BannerAdListener {
+        public void onBannerLoadStarted(MoPubView banner);
         public void onBannerLoaded(MoPubView banner);
+        public void onBannerTimed(MoPubView banner);
         public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
         public void onBannerClicked(MoPubView banner);
         public void onBannerExpanded(MoPubView banner);
@@ -207,12 +210,17 @@ public class MoPubView extends FrameLayout {
                 new Reflection.MethodBuilder(mCustomEventBannerAdapter, "loadAd")
                         .setAccessible()
                         .execute();
+                if (mBannerAdListener != null){
+                    mBannerAdListener.onBannerLoadStarted(this);
+                }
             } catch (Exception e) {
                 MoPubLog.e("Error loading custom event", e);
             }
         } else {
             MoPubLog.e("Could not load custom event -- missing banner module");
         }
+
+
     }
 
     protected void registerClick() {
@@ -269,6 +277,12 @@ public class MoPubView extends FrameLayout {
     protected void adFailed(MoPubErrorCode errorCode) {
         if (mBannerAdListener != null) {
             mBannerAdListener.onBannerFailed(this, errorCode);
+        }
+    }
+
+    public void adTimed(){
+        if (mBannerAdListener != null) {
+            mBannerAdListener.onBannerTimed(this);
         }
     }
 

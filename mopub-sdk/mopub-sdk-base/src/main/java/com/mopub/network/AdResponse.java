@@ -14,7 +14,7 @@ import java.util.TreeMap;
 
 public class AdResponse implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    public static final String TIER_NAME = "name";
     @Nullable
     private final String mAdType;
 
@@ -72,6 +72,9 @@ public class AdResponse implements Serializable {
 
     private final long mTimestamp;
 
+    @Nullable
+    private final String tierName;
+
     private AdResponse(@NonNull Builder builder) {
 
         mAdType = builder.adType;
@@ -100,6 +103,8 @@ public class AdResponse implements Serializable {
         mCustomEventClassName = builder.customEventClassName;
         mServerExtras = builder.serverExtras;
         mTimestamp = DateAndTime.now().getTime();
+
+        tierName = mServerExtras.get(TIER_NAME);
     }
 
     public boolean hasJson() {
@@ -223,6 +228,11 @@ public class AdResponse implements Serializable {
 
     public long getTimestamp() {
         return mTimestamp;
+    }
+
+    @Nullable
+    public String getTierName() {
+        return tierName;
     }
 
     public Builder toBuilder() {
