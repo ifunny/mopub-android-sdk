@@ -36,7 +36,7 @@ public class MoPubView extends FrameLayout {
         public void onBannerLoadStarted(MoPubView banner);
         public void onBannerLoaded(MoPubView banner);
         public void onBannerAttemptFailed(MoPubView banner);
-        public void onBannerTimed(MoPubView banner);
+        public void onBannerAttemptTimed(MoPubView banner);
         public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
         public void onBannerClicked(MoPubView banner);
         public void onBannerExpanded(MoPubView banner);
@@ -290,7 +290,7 @@ public class MoPubView extends FrameLayout {
 
     public void adTimed(){
         if (mBannerAdListener != null) {
-            mBannerAdListener.onBannerTimed(this);
+            mBannerAdListener.onBannerAttemptTimed(this);
         }
     }
 
