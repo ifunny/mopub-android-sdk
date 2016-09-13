@@ -35,6 +35,7 @@ public class MoPubView extends FrameLayout {
     public interface BannerAdListener {
         public void onBannerLoadStarted(MoPubView banner);
         public void onBannerLoaded(MoPubView banner);
+        public void onBannerAttemptFailed(MoPubView banner);
         public void onBannerTimed(MoPubView banner);
         public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
         public void onBannerClicked(MoPubView banner);
@@ -274,7 +275,14 @@ public class MoPubView extends FrameLayout {
         }
     }
 
+    protected void adAttemptFailed(){
+        if (mBannerAdListener != null) {
+            mBannerAdListener.onBannerAttemptFailed(this);
+        }
+    }
+
     protected void adFailed(MoPubErrorCode errorCode) {
+        adAttemptFailed();
         if (mBannerAdListener != null) {
             mBannerAdListener.onBannerFailed(this, errorCode);
         }

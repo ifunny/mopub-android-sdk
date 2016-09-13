@@ -271,7 +271,11 @@ public class AdViewController {
         if (!TextUtils.isEmpty(failUrl)) {
             MoPubLog.d("Loading failover url: " + failUrl);
             loadNonJavascript(failUrl);
+            if (mMoPubView != null){
+                mMoPubView.adAttemptFailed();
+            }
             return true;
+
         } else {
             // No other URLs to try, so signal a failure.
             adDidFail(MoPubErrorCode.NO_FILL);
