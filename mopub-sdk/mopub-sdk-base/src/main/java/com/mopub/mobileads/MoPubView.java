@@ -35,8 +35,8 @@ public class MoPubView extends FrameLayout {
     public interface BannerAdListener {
         public void onBannerLoadStarted(MoPubView banner);
         public void onBannerLoaded(MoPubView banner);
-        public void onBannerAttemptFailed(MoPubView banner);
-        public void onBannerAttemptTimed(MoPubView banner);
+        public void onBannerNetworkFailed(MoPubView banner);
+        public void onBannerNetworkTimed(MoPubView banner);
         public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
         public void onBannerClicked(MoPubView banner);
         public void onBannerExpanded(MoPubView banner);
@@ -275,22 +275,22 @@ public class MoPubView extends FrameLayout {
         }
     }
 
-    protected void adAttemptFailed(){
+    protected void adNetworkFailed(){
         if (mBannerAdListener != null) {
-            mBannerAdListener.onBannerAttemptFailed(this);
+            mBannerAdListener.onBannerNetworkFailed(this);
         }
     }
 
     protected void adFailed(MoPubErrorCode errorCode) {
-        adAttemptFailed();
+        adNetworkFailed();
         if (mBannerAdListener != null) {
             mBannerAdListener.onBannerFailed(this, errorCode);
         }
     }
 
-    public void adTimed(){
+    public void adNetworkTimed(){
         if (mBannerAdListener != null) {
-            mBannerAdListener.onBannerAttemptTimed(this);
+            mBannerAdListener.onBannerNetworkTimed(this);
         }
     }
 

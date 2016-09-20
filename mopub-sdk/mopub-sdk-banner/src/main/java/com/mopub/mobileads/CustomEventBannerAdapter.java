@@ -154,7 +154,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
         MoPubLog.d("Third-party network timed out.");
         onBannerFailed(NETWORK_TIMEOUT);
         if (mMoPubView != null){
-            mMoPubView.adTimed();
+            mMoPubView.adNetworkTimed();
         }
         invalidate();
     }
