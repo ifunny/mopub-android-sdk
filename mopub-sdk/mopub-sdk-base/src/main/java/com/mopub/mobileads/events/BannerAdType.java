@@ -5,12 +5,16 @@ package com.mopub.mobileads.events;
  */
 public enum BannerAdType {
 	AdMob("AdMob"),
-	Mopub("Mopub"),
+	AdMobECPM("AdMobECPM"),
+	MopubHTML("MoPubHTML"),
+	MopubMRAID("MoPubMRAID"),
 	Facebook("Facebook"),
-	Millennial("Millenial"),
+	Millennial("Millennial"),
 	Inneractive("Inneractive"),
 	Amazon("Amazon"),
-	Flurry("Flurry");
+	InMobi("InMobi"),
+	Flurry("Flurry"),
+	Mobfox("Mobfox");
 
 	private String name;
 
@@ -24,14 +28,14 @@ public enum BannerAdType {
 
 	public static BannerAdType fromAdapterClass(String className) {
 		if (className == null) {
-			return Mopub;
+			return MopubHTML;
 		}
 		switch (className) {
 			case "com.mopub.mobileads.AdMobGeneric": {
 				return AdMob;
 			}
 			case "com.mopub.mobileads.AdMobWCPMFloor": {
-				return AdMob;
+				return AdMobECPM;
 			}
 			case "com.mopub.mobileads.AmazonBanner": {
 				return Amazon;
@@ -51,8 +55,20 @@ public enum BannerAdType {
 			case "com.mopub.mobileads.FlurryCustomEventBanner": {
 				return Flurry;
 			}
+			case "com.mopub.mobileads.InMobiBannerCustomEvent": {
+				return InMobi;
+			}
+			case "com.mopub.mobileads.HtmlBanner": {
+				return MopubHTML;
+			}
+			case "com.mopub.mobileads.MraidBanner": {
+				return MopubMRAID;
+			}
+			case "com.mopub.mobileads.MobfoxBanner": {
+				return Mobfox;
+			}
 			default: {
-				return Mopub;
+				return MopubHTML;
 			}
 		}
 	}
