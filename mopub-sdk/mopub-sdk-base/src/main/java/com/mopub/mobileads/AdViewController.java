@@ -273,6 +273,9 @@ public class AdViewController {
             loadNonJavascript(failUrl);
             if (mMoPubView != null){
                 mMoPubView.adNetworkFailed();
+                if (errorCode == MoPubErrorCode.NETWORK_TIMEOUT) {
+                    mMoPubView.adNetworkTimed();
+                }
             }
             return true;
 
