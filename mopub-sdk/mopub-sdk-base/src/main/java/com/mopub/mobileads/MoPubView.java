@@ -179,6 +179,11 @@ public class MoPubView extends FrameLayout {
         if (mAdViewController == null) {
             return;
         }
+
+        if (mBannerAdListener != null){
+            mBannerAdListener.onBannerLoadStarted(this);
+        }
+
         if (TextUtils.isEmpty(customEventClassName)) {
             MoPubLog.d("Couldn't invoke custom event because the server did not specify one.");
             loadFailUrl(ADAPTER_NOT_FOUND);
@@ -211,16 +216,12 @@ public class MoPubView extends FrameLayout {
                 new Reflection.MethodBuilder(mCustomEventBannerAdapter, "loadAd")
                         .setAccessible()
                         .execute();
-                if (mBannerAdListener != null){
-                    mBannerAdListener.onBannerLoadStarted(this);
-                }
             } catch (Exception e) {
                 MoPubLog.e("Error loading custom event", e);
             }
         } else {
             MoPubLog.e("Could not load custom event -- missing banner module");
         }
-
 
     }
 
@@ -282,7 +283,6 @@ public class MoPubView extends FrameLayout {
     }
 
     protected void adFailed(MoPubErrorCode errorCode) {
-        adNetworkFailed();
         if (mBannerAdListener != null) {
             mBannerAdListener.onBannerFailed(this, errorCode);
         }
