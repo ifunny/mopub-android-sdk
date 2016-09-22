@@ -265,9 +265,11 @@ public class AdViewController {
     boolean loadFailUrl(MoPubErrorCode errorCode) {
         mIsLoading = false;
         if (mMoPubView != null){
-            mMoPubView.adNetworkFailed();
             if (errorCode == MoPubErrorCode.NETWORK_TIMEOUT) {
                 mMoPubView.adNetworkTimed();
+            }
+            else {
+                mMoPubView.adNetworkFailed();
             }
         }
         Log.v("MoPub", "MoPubErrorCode: " + (errorCode == null ? "" : errorCode.toString()));
