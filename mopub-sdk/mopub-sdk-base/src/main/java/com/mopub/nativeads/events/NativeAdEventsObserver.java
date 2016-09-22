@@ -1,5 +1,7 @@
 package com.mopub.nativeads.events;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,33 +36,40 @@ public class NativeAdEventsObserver {
 		listeners.remove(listener);
 	}
 
+	private String handleTierName(NativeAdType adType, String tierName) {
+		if (TextUtils.isEmpty(tierName)) {
+			return adType.name();
+		}
+		return tierName;
+	}
+
 	public void onAdClicked(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdClicked(adType, tierName);
+			listener.onNativeAdClicked(adType, handleTierName(adType, tierName));
 		}
 	}
 
 	public void onAdImpressed(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdImpressed(adType, tierName);
+			listener.onNativeAdImpressed(adType, handleTierName(adType, tierName));
 		}
 	}
 
 	public void onAdRequested(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdRequested(adType, tierName);
+			listener.onNativeAdRequested(adType, handleTierName(adType, tierName));
 		}
 	}
 
 	public void onAdLoaded(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdLoadSuccess(adType, tierName);
+			listener.onNativeAdLoadSuccess(adType, handleTierName(adType, tierName));
 		}
 	}
 
 	public void onAdCanceledByTimeout(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
-			listener.onNativeAdCanceledByTimeout(adType, tierName);
+			listener.onNativeAdCanceledByTimeout(adType, handleTierName(adType, tierName));
 		}
 	}
 }

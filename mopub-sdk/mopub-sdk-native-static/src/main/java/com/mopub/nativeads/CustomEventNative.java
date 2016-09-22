@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class CustomEventNative {
 
     private CustomEventNative.CustomEventNativeListener mCustomEventNativeListener;
-    private NativeAdType mNativeAdType = NativeAdType.Mopub;
+    private NativeAdType mNativeAdType = NativeAdType.MoPub;
     protected String tierName;
 
     /**
@@ -81,7 +81,6 @@ public abstract class CustomEventNative {
 
     protected final void notifyAdLoaded(BaseNativeAd baseNativeAd) {
         mCustomEventNativeListener.onNativeAdLoaded(baseNativeAd);
-        NativeAdEventsObserver.instance().onAdLoaded(mNativeAdType, getTierName());
     }
 
     protected final void notifyLoadFailed(NativeErrorCode errorCode){
@@ -102,9 +101,5 @@ public abstract class CustomEventNative {
 
     public String getTierName() {
         return tierName;
-    }
-
-    public void cancelByTimeout(){
-        NativeAdEventsObserver.instance().onAdCanceledByTimeout(mNativeAdType, getTierName());
     }
 }

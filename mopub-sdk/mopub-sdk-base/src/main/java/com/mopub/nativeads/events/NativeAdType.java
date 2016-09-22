@@ -5,7 +5,7 @@ package com.mopub.nativeads.events;
  */
 public enum NativeAdType {
 	Google,
-	Mopub,
+	MoPub,
 	Facebook,
 	Millennial,
 	Inneractive,

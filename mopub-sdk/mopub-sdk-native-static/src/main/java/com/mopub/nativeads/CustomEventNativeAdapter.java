@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import com.mopub.common.DataKeys;
 import com.mopub.common.event.EventDetails;
 import com.mopub.common.logging.MoPubLog;
+import com.mopub.nativeads.events.NativeAdEventsObserver;
 import com.mopub.nativeads.factories.CustomEventNativeFactory;
 import com.mopub.network.AdResponse;
 
@@ -87,7 +88,9 @@ final class CustomEventNativeAdapter {
 
         @Override
         public void onNativeAdLoaded(BaseNativeAd nativeAd) {
-            if (runningEvents.containsKey(this)){
+	        CustomEventNative eventNative = runningEvents.get(this);
+            if (eventNative != null){
+                NativeAdEventsObserver.instance().onAdLoaded(eventNative.getNativeAdType(),eventNative.getTierName());
                 listener.onNativeAdLoaded(nativeAd);
                 runningEvents.remove(this);
             }
@@ -95,17 +98,18 @@ final class CustomEventNativeAdapter {
 
         @Override
         public void onNativeAdFailed(NativeErrorCode errorCode) {
-            if (runningEvents.containsKey(this)){
+	        CustomEventNative eventNative = runningEvents.get(this);
+            if (eventNative != null){
                 listener.onNativeAdFailed(errorCode);
                 runningEvents.remove(this);
             }
         }
 
         private void cancelEvent(){
-            if (runningEvents.containsKey(this)){
+	        CustomEventNative eventNative = runningEvents.get(this);
+            if (eventNative != null){
                 listener.onNativeAdFailed(NativeErrorCode.NETWORK_TIMEOUT);
-                CustomEventNative customEventNative = runningEvents.get(this);
-                customEventNative.cancelByTimeout();
+	            NativeAdEventsObserver.instance().onAdCanceledByTimeout(eventNative.getNativeAdType(),eventNative.getTierName());
                 runningEvents.remove(this);
             }
         }

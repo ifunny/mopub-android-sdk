@@ -34,7 +34,7 @@ public class MoPubCustomEventNative extends CustomEventNative {
             @NonNull final Map<String, String> serverExtras) {
         super.loadNativeAd(context, customEventNativeListener, localExtras, serverExtras);
         setCustomEventNativeListener(customEventNativeListener);
-        setNativeAdType(NativeAdType.Mopub);
+        setNativeAdType(NativeAdType.MoPub);
 
         Object json = localExtras.get(JSON_BODY_KEY);
         // null or non-JSONObjects should not be passed in localExtras as JSON_BODY_KEY
