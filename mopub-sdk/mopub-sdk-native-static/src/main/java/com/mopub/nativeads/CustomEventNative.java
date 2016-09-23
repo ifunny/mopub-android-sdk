@@ -3,6 +3,7 @@ package com.mopub.nativeads;
 import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.mopub.nativeads.events.NativeAdEventsObserver;
 import com.mopub.nativeads.events.NativeAdType;
@@ -100,6 +101,9 @@ public abstract class CustomEventNative {
     }
 
     public String getTierName() {
+        if (TextUtils.isEmpty(tierName)) {
+            return mNativeAdType.name();
+        }
         return tierName;
     }
 }
