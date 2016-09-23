@@ -85,6 +85,10 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
             httpUrlConnection.setInstanceFollowRedirects(false);
 
             return resolveRedirectLocation(urlString, httpUrlConnection);
+        } catch (java.lang.IllegalStateException e) {
+            //java.lang.IllegalStateException possible from com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode -> com.android.okhttp.internal.DiskLruCache.checkNotClosed
+            //Throw a new IOException like resolveRedirectLocation would for a similar IO error
+           throw new IOException("Unable to resolve URL due to IllegalStateException", e);
         } finally {
             if (httpUrlConnection != null) {
                 httpUrlConnection.disconnect();
@@ -112,7 +116,7 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
                 // otherwise, resolve() will return the redirectUrl
                 String encodedRedirectUrl = encodeUriParameters(redirectUrl);
                 result = baseUri.resolve(encodedRedirectUrl).toString();
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException| MalformedURLException | URISyntaxException e) {
                 // Ensure the request is cancelled instead of resolving an intermediary URL
                 throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
             }
@@ -139,17 +143,9 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
         mListener.onFailure("Task for resolving url was cancelled", null);
     }
 
-    private static String encodeUriParameters(String locationUrl) {
-        URL url;
-        URI uri;
-        try {
-            url = new URL(locationUrl);
-            uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
-        } catch (MalformedURLException e) {
-            return null;
-        } catch (URISyntaxException e) {
-            return null;
-        }
+    private static String encodeUriParameters(String locationUrl) throws MalformedURLException, URISyntaxException{
+        URL url = new URL(locationUrl);
+        URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
         return uri.toString();
     }
 }
