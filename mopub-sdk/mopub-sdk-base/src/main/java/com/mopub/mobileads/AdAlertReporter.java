@@ -10,13 +10,19 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mopub.common.AdReport;
+import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.DateAndTime;
 import com.mopub.common.util.Intents;
+import com.mopub.common.util.Streams;
 import com.mopub.exceptions.IntentNotResolvableException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
+import static android.R.attr.mode;
 
 public class AdAlertReporter {
     private static final String EMAIL_RECIPIENT = "creative-review@mopub.com";
@@ -121,6 +127,7 @@ public class AdAlertReporter {
         }
         mEmailIntent.putExtra(Intent.EXTRA_TEXT, body.toString());
     }
+
 
     @Deprecated // for testing
     Intent getEmailIntent() {
