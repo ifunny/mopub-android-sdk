@@ -43,6 +43,7 @@ import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 public class AdViewController {
     static final int DEFAULT_REFRESH_TIME_MILLISECONDS = 60000;  // 1 minute
     static final int MAX_REFRESH_TIME_MILLISECONDS = 600000; // 10 minutes
+    static final int MARKER_OFFSET_COLOR = 0x454545;
     static final double BACKOFF_FACTOR = 1.5;
     private static final FrameLayout.LayoutParams WRAP_AND_CENTER_LAYOUT_PARAMS =
             new FrameLayout.LayoutParams(
@@ -550,6 +551,18 @@ public class AdViewController {
                 }
                 moPubView.removeAllViews();
                 moPubView.addView(view, getAdLayoutParams(view));
+
+                if (null == mAdResponse) {
+                    return;
+                }
+
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(1, 1);
+                int scaledHeight = Dips.asIntPixels(mAdResponse.getHeight(), mContext);
+                params.setMargins(0, scaledHeight - mAdResponse.getMarkerOffset(), 0, 0);
+                View dot = new View(view.getContext());
+                dot.setLayoutParams(params);
+                dot.setBackgroundColor(MARKER_OFFSET_COLOR);
+                moPubView.addView(dot);
             }
         });
     }

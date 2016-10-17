@@ -14,7 +14,9 @@ import java.util.TreeMap;
 
 public class AdResponse implements Serializable {
     private static final long serialVersionUID = 1L;
-    public static final String TIER_NAME = "name";
+    private static final String TIER_NAME = "name";
+    private static final String MARKER_OFFSET = "marker_offset";
+
     @Nullable
     private final String mAdType;
 
@@ -75,6 +77,9 @@ public class AdResponse implements Serializable {
     @Nullable
     private final String tierName;
 
+    @Nullable
+    private final Integer markerOffset;
+
     private AdResponse(@NonNull Builder builder) {
 
         mAdType = builder.adType;
@@ -105,6 +110,7 @@ public class AdResponse implements Serializable {
         mTimestamp = DateAndTime.now().getTime();
 
         tierName = mServerExtras.get(TIER_NAME);
+        markerOffset = Integer.valueOf(mServerExtras.get(MARKER_OFFSET));
     }
 
     public boolean hasJson() {
@@ -233,6 +239,11 @@ public class AdResponse implements Serializable {
     @Nullable
     public String getTierName() {
         return tierName;
+    }
+
+    @Nullable
+    public Integer getMarkerOffset() {
+        return markerOffset;
     }
 
     public Builder toBuilder() {
