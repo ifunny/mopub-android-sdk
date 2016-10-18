@@ -2,6 +2,7 @@ package com.mopub.network;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.mopub.common.event.EventDetails;
 import com.mopub.common.util.DateAndTime;
@@ -78,7 +79,7 @@ public class AdResponse implements Serializable {
     private final String tierName;
 
     @Nullable
-    private final Integer markerOffset;
+    private  Integer markerOffset;
 
     private AdResponse(@NonNull Builder builder) {
 
@@ -110,7 +111,12 @@ public class AdResponse implements Serializable {
         mTimestamp = DateAndTime.now().getTime();
 
         tierName = mServerExtras.get(TIER_NAME);
-        markerOffset = Integer.valueOf(mServerExtras.get(MARKER_OFFSET));
+        String stringOffset = mServerExtras.get(MARKER_OFFSET);
+	    try {
+		    markerOffset = TextUtils.isEmpty(stringOffset) ? null : Integer.valueOf(stringOffset);
+	    } catch (NumberFormatException e) {
+		    markerOffset = null;
+	    }
     }
 
     public boolean hasJson() {
