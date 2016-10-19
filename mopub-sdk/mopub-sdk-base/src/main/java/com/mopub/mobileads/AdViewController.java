@@ -558,7 +558,7 @@ public class AdViewController {
                 moPubView.removeAllViews();
                 moPubView.addView(view, getAdLayoutParams(view));
 
-                if (null != mAdResponse && null != mAdResponse.getMarkerOffset()) {
+                if (null != mAdResponse && mAdResponse.getMarkerOffset() != null) {
                     markerLayoutParams.setMargins(0, 0, 0, mAdResponse.getMarkerOffset());
                     moPubView.addView(marker, markerLayoutParams);
                 }
