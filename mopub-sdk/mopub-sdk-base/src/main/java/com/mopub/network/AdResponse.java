@@ -20,6 +20,8 @@ public class AdResponse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String TIER_NAME = "name";
     private static final String MARKER_OFFSET = "marker_offset";
+    private static final String TIER_NAME_REGEX = "\"funcorp_tier_name\"=\"(.+)\"";
+    private static final String MARKER_OFFSET_REGEX = "\"funcorp_tier_marker_offset\"=\"(\\d+)\"";
 
     @Nullable
     private final String mAdType;
@@ -116,8 +118,8 @@ public class AdResponse implements Serializable {
         if (mServerExtras.containsKey(DataKeys.HTML_RESPONSE_BODY_KEY)) {
             String data = mServerExtras.get(DataKeys.HTML_RESPONSE_BODY_KEY);
 
-            tierName = getFirstMatchedGroup(data, "\"funcorp_tier_name\"=\"(.+)\"");
-            String stringOffset = getFirstMatchedGroup(data, "\"funcorp_tier_marker_offset\"=\"(\\d+)\"");
+            tierName = getFirstMatchedGroup(data, TIER_NAME_REGEX);
+            String stringOffset = getFirstMatchedGroup(data, MARKER_OFFSET_REGEX);
             markerOffset = stringToInt(stringOffset);
         }
         else {
