@@ -20,8 +20,10 @@ public class AdResponse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String TIER_NAME = "name";
     private static final String MARKER_OFFSET = "marker_offset";
-    private static final String TIER_NAME_REGEX = "\"funcorp_tier_name\"=\"(.+)\"";
+    private static final String TIER_NAME_REGEX = "\"funcorp_tier_name\"=\"([^\"]+)\"";
     private static final String MARKER_OFFSET_REGEX = "\"funcorp_tier_marker_offset\"=\"(\\d+)\"";
+    private static final Pattern tierNamePattern = Pattern.compile(TIER_NAME_REGEX, Pattern.CASE_INSENSITIVE);
+    private static final Pattern markerOffsetPattern = Pattern.compile(MARKER_OFFSET_REGEX, Pattern.CASE_INSENSITIVE);
 
     @Nullable
     private final String mAdType;
@@ -118,8 +120,8 @@ public class AdResponse implements Serializable {
         if (mServerExtras.containsKey(DataKeys.HTML_RESPONSE_BODY_KEY)) {
             String data = mServerExtras.get(DataKeys.HTML_RESPONSE_BODY_KEY);
 
-            tierName = getFirstMatchedGroup(data, TIER_NAME_REGEX);
-            String stringOffset = getFirstMatchedGroup(data, MARKER_OFFSET_REGEX);
+            tierName = getFirstMatchedGroup(data, tierNamePattern);
+            String stringOffset = getFirstMatchedGroup(data, markerOffsetPattern);
             markerOffset = stringToInt(stringOffset);
         }
         else {
@@ -129,8 +131,7 @@ public class AdResponse implements Serializable {
         }
     }
 
-    private String getFirstMatchedGroup(String data, String regex) {
-        Pattern pattern = Pattern.compile(regex);
+    private String getFirstMatchedGroup(String data, Pattern pattern) {
         Matcher matcher = pattern.matcher(data);
 
         return matcher.groupCount() > 0 ? matcher.group(1) : "";
