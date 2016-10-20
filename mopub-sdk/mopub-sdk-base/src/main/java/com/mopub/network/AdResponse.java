@@ -117,18 +117,19 @@ public class AdResponse implements Serializable {
         mServerExtras = builder.serverExtras;
         mTimestamp = DateAndTime.now().getTime();
 
+        String stringOffset;
         if (mServerExtras.containsKey(DataKeys.HTML_RESPONSE_BODY_KEY)) {
             String data = mServerExtras.get(DataKeys.HTML_RESPONSE_BODY_KEY);
 
             tierName = getFirstMatchedGroup(data, tierNamePattern);
-            String stringOffset = getFirstMatchedGroup(data, markerOffsetPattern);
-            markerOffset = stringToInt(stringOffset);
+            stringOffset = getFirstMatchedGroup(data, markerOffsetPattern);
         }
         else {
             tierName = mServerExtras.get(TIER_NAME);
-            String stringOffset = mServerExtras.get(MARKER_OFFSET);
-            markerOffset = stringToInt(stringOffset);
+            stringOffset = mServerExtras.get(MARKER_OFFSET);
         }
+
+        markerOffset = stringToInt(stringOffset);
     }
 
     private String getFirstMatchedGroup(String data, Pattern pattern) {
