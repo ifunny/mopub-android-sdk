@@ -133,10 +133,18 @@ public class AdResponse implements Serializable {
     }
 
     private String getFirstMatchedGroup(String data, Pattern pattern) {
-        Matcher matcher = pattern.matcher(data);
+        try {
+            Matcher matcher = pattern.matcher(data);
+            if (matcher.find()) {
+                return matcher.group(1);
+            }
+            return null;
+        } catch (Exception e) {
 
-        return matcher.groupCount() > 0 ? matcher.group(1) : "";
+            return null;
+        }
     }
+
 
     private Integer stringToInt(String number) {
         try {
