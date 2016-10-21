@@ -61,7 +61,7 @@ public enum BannerAdType {
 			case "com.mopub.mobileads.HtmlBanner": {
 				return MopubHTML;
 			}
-			case "com.mopub.mobileads.MraidBanner": {
+			case "com.mopub.mraid.MraidBanner": {
 				return MopubMRAID;
 			}
 			case "com.mopub.mobileads.MobfoxBanner": {
