@@ -45,6 +45,9 @@ public class AdViewController {
     static final int MAX_REFRESH_TIME_MILLISECONDS = 600000; // 10 minutes
     static final int MARKER_OFFSET_COLOR = 0xFF454545;
     static final double BACKOFF_FACTOR = 1.5;
+
+    private boolean showMarker = true;
+
     private static final FrameLayout.LayoutParams WRAP_AND_CENTER_LAYOUT_PARAMS =
             new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -554,7 +557,7 @@ public class AdViewController {
                 moPubView.removeAllViews();
                 moPubView.addView(view, getAdLayoutParams(view));
 
-                if (null != mAdResponse && mAdResponse.getMarkerOffset() != null) {
+                if (showMarker && null != mAdResponse && mAdResponse.getMarkerOffset() != null) {
                     markerLayoutParams.setMargins(0, 0, 0, mAdResponse.getMarkerOffset());
                     moPubView.addView(marker, markerLayoutParams);
                 }
@@ -594,5 +597,9 @@ public class AdViewController {
     @VisibleForTesting
     void setRefreshTimeMillis(@Nullable final Integer refreshTimeMillis) {
         mRefreshTimeMillis = refreshTimeMillis;
+    }
+
+    public void setShowMarker(boolean showMarker) {
+        this.showMarker = showMarker;
     }
 }

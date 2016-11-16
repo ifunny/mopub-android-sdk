@@ -461,4 +461,10 @@ public class MoPubView extends FrameLayout {
     public void permitAdapter(String adapterClassName){
         bannedAdapters.remove(adapterClassName);
     }
+
+    public void setShowMarker(boolean showMarker){
+        if (mAdViewController != null){
+            mAdViewController.setShowMarker(showMarker);
+        }
+    }
 }
