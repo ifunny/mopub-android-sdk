@@ -37,6 +37,10 @@ public abstract class CustomEventBanner {
      * Called when a Custom Event is being invalidated or destroyed. Perform any final cleanup here.
      */
     protected abstract void onInvalidate();
+
+    protected void onStop(){
+
+    }
     
     public interface CustomEventBannerListener {
         /*

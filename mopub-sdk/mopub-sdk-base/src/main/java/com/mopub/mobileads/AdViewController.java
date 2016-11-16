@@ -278,6 +278,8 @@ public class AdViewController {
             else {
                 mMoPubView.adNetworkFailed();
             }
+
+            mMoPubView.stopAdapter();
         }
         Log.v("MoPub", "MoPubErrorCode: " + (errorCode == null ? "" : errorCode.toString()));
 
@@ -285,12 +287,6 @@ public class AdViewController {
         if (!TextUtils.isEmpty(failUrl)) {
             MoPubLog.d("Loading failover url: " + failUrl);
             loadNonJavascript(failUrl);
-            if (mMoPubView != null){
-                mMoPubView.adNetworkFailed();
-                if (errorCode == MoPubErrorCode.NETWORK_TIMEOUT) {
-                    mMoPubView.adNetworkTimed();
-                }
-            }
             return true;
 
         } else {

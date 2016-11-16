@@ -58,6 +58,11 @@ public class HtmlBanner extends CustomEventBanner {
         }
     }
 
+    @Override
+    protected void onStop() {
+        mHtmlBannerWebView.setWebViewClient(null);
+    }
+
     private boolean extrasAreValid(Map<String, String> serverExtras) {
         return serverExtras.containsKey(DataKeys.HTML_RESPONSE_BODY_KEY);
     }

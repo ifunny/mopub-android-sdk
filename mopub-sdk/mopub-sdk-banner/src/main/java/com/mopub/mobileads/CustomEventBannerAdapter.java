@@ -112,6 +112,17 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
         mInvalidated = true;
     }
 
+    @ReflectionTarget
+    void stop(){
+        if (mCustomEventBanner != null) {
+            try {
+                mCustomEventBanner.onStop();
+            } catch (Exception e) {
+                MoPubLog.d("Stopping a custom event banner threw an exception", e);
+            }
+        }
+    }
+
     boolean isInvalidated() {
         return mInvalidated;
     }

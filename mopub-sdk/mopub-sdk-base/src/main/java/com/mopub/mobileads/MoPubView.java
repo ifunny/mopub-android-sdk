@@ -164,6 +164,18 @@ public class MoPubView extends FrameLayout {
         }
     }
 
+    public void stopAdapter() {
+        if (mCustomEventBannerAdapter != null) {
+            try {
+                new Reflection.MethodBuilder(mCustomEventBannerAdapter, "stop")
+                        .setAccessible()
+                        .execute();
+            } catch (Exception e) {
+                MoPubLog.e("Error stopping adapter", e);
+            }
+        }
+    }
+
     Integer getAdTimeoutDelay() {
         return (mAdViewController != null) ? mAdViewController.getAdTimeoutDelay() : null;
     }
