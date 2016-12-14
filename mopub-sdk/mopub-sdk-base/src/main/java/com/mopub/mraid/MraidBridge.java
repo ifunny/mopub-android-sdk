@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.webkit.ConsoleMessage;
+import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -140,6 +141,15 @@ public class MraidBridge {
                 }
                 return super.onConsoleMessage(consoleMessage);
             }
+
+	        @Override
+	        public boolean onJsPrompt(@NonNull final WebView view, @NonNull final String url,
+	                                  @NonNull final String message, @NonNull final String defaultValue,
+	                                  @NonNull final JsPromptResult result) {
+		        MoPubLog.d(message);
+		        result.confirm();
+		        return true;
+	        }
 
             @Override
             public void onShowCustomView(final View view, final CustomViewCallback callback) {
