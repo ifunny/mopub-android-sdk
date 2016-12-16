@@ -176,6 +176,30 @@ public class MoPubView extends FrameLayout {
         }
     }
 
+    private void pauseAdapter(){
+        if (mCustomEventBannerAdapter != null) {
+            try {
+                new Reflection.MethodBuilder(mCustomEventBannerAdapter, "pause")
+                        .setAccessible()
+                        .execute();
+            } catch (Exception e) {
+                MoPubLog.e("Error pausing adapter", e);
+            }
+        }
+    }
+
+    private void resumeAdapter(){
+        if (mCustomEventBannerAdapter != null) {
+            try {
+                new Reflection.MethodBuilder(mCustomEventBannerAdapter, "resume")
+                        .setAccessible()
+                        .execute();
+            } catch (Exception e) {
+                MoPubLog.e("Error resume adapter", e);
+            }
+        }
+    }
+
     Integer getAdTimeoutDelay() {
         return (mAdViewController != null) ? mAdViewController.getAdTimeoutDelay() : null;
     }
@@ -275,8 +299,10 @@ public class MoPubView extends FrameLayout {
 
         if (Visibility.isScreenVisible(visibility)) {
             mAdViewController.unpauseRefresh();
+	        resumeAdapter();
         } else {
             mAdViewController.pauseRefresh();
+	        pauseAdapter();
         }
     }
 

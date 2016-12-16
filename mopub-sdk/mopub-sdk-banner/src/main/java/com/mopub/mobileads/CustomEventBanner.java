@@ -41,6 +41,14 @@ public abstract class CustomEventBanner {
     protected void onStop(){
 
     }
+
+    protected void onPause(){
+
+    }
+
+    protected void onResume(){
+
+    }
     
     public interface CustomEventBannerListener {
         /*
