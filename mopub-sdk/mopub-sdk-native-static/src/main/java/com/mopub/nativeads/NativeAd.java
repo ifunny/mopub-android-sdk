@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.mopub.common.VisibleForTesting;
 import com.mopub.nativeads.MoPubCustomEventNative.MoPubStaticNativeAd;
+import com.mopub.nativeads.events.NativeAdEventsObserver;
 import com.mopub.network.AdResponse;
 import com.mopub.network.TrackingRequest;
 
@@ -211,6 +212,9 @@ public class NativeAd {
             return;
         }
 
+        NativeAdEventsObserver.instance().onAdImpressed(mBaseNativeAd.getEventNative().getNativeAdType(), mBaseNativeAd.getEventNative()
+                .getTierName());
+
         TrackingRequest.makeTrackingHttpRequest(mImpressionTrackers, mContext);
         if (mMoPubNativeEventListener != null) {
             mMoPubNativeEventListener.onImpression(view);
@@ -224,6 +228,9 @@ public class NativeAd {
         if (mIsClicked || mIsDestroyed) {
             return;
         }
+
+        NativeAdEventsObserver.instance().onAdClicked(mBaseNativeAd.getEventNative().getNativeAdType(), mBaseNativeAd.getEventNative()
+                .getTierName());
 
         TrackingRequest.makeTrackingHttpRequest(mClickTrackers, mContext);
         if (mMoPubNativeEventListener != null) {

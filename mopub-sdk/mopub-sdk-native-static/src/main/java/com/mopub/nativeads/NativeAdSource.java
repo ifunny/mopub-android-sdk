@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.mopub.common.VisibleForTesting;
+import com.mopub.nativeads.events.NativeAdEventsObserver;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -120,6 +121,8 @@ class NativeAdSource {
             public void onNativeFail(final NativeErrorCode errorCode) {
                 // Reset the retry time for the next time we dequeue.
                 mRequestInFlight = false;
+
+                NativeAdEventsObserver.instance().onAdFailed();
 
                 // Stopping requests after the max retry count prevents us from using battery when
                 // the user is not interacting with the stream, eg. the app is backgrounded.

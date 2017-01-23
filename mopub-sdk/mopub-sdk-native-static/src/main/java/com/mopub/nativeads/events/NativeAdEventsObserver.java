@@ -1,5 +1,7 @@
 package com.mopub.nativeads.events;
 
+import com.mopub.nativeads.NativeErrorCode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,18 @@ public class NativeAdEventsObserver {
 	public void onAdCanceledByTimeout(NativeAdType adType, String tierName) {
 		for (NativeAdEventsListener listener : listeners) {
 			listener.onNativeAdCanceledByTimeout(adType, tierName);
+		}
+	}
+
+	public void onAdNetworkFailed(NativeAdType adType, String tierName, NativeErrorCode errorCode) {
+		for (NativeAdEventsListener listener : listeners) {
+			listener.onNativeAdNetworkFailed(adType, tierName, errorCode);
+		}
+	}
+
+	public void onAdFailed() {
+		for (NativeAdEventsListener listener : listeners) {
+			listener.onNativeAdFailed();
 		}
 	}
 }

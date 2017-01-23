@@ -101,6 +101,7 @@ final class CustomEventNativeAdapter {
 	        CustomEventNative eventNative = runningEvents.get(this);
             if (eventNative != null){
                 listener.onNativeAdFailed(errorCode);
+                NativeAdEventsObserver.instance().onAdNetworkFailed(eventNative.getNativeAdType(),eventNative.getTierName(),errorCode);
                 runningEvents.remove(this);
             }
         }
