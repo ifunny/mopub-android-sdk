@@ -345,6 +345,7 @@ public class MraidBridge {
         // clicking a hyperlink, or setting window.location directly in Javascript. It checks for
         // clicked in order to avoid interfering with automatically browser redirects.
         if (mIsClicked) {
+
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
@@ -355,6 +356,11 @@ public class MraidBridge {
                     MoPubLog.d("WebView was detached. Unable to load a URL");
                     return true;
                 }
+
+                if (mMraidBridgeListener != null){
+                    mMraidBridgeListener.onOpen(uri);
+                }
+
                 mMraidWebView.getContext().startActivity(intent);
                 return true;
             } catch (ActivityNotFoundException e) {
