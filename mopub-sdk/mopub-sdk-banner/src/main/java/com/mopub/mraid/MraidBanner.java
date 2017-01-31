@@ -79,6 +79,11 @@ class MraidBanner extends CustomEventBanner {
             public void onClose() {
                 mBannerListener.onBannerCollapsed();
             }
+
+            @Override
+            public void onDirectClick() {
+                mBannerListener.onBannerClicked();
+            }
         });
         mMraidController.loadContent(htmlData);
     }

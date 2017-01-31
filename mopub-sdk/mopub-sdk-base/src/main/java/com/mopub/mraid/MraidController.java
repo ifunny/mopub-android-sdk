@@ -60,6 +60,7 @@ public class MraidController {
         void onExpand();
         void onOpen();
         void onClose();
+        void onDirectClick();
     }
 
     public interface UseCustomCloseListener {
@@ -247,6 +248,13 @@ public class MraidController {
         public void onPlayVideo(@NonNull final URI uri) {
             handleShowVideo(uri.toString());
         }
+
+        @Override
+        public void onDirectClick(URI uri) {
+            if (mMraidListener != null) {
+                mMraidListener.onDirectClick();
+            }
+        }
     };
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -314,6 +322,13 @@ public class MraidController {
         @Override
         public void onPlayVideo(@NonNull final URI uri) {
             handleShowVideo(uri.toString());
+        }
+
+        @Override
+        public void onDirectClick(URI uri) {
+            if (mMraidListener != null) {
+                mMraidListener.onDirectClick();
+            }
         }
     };
 

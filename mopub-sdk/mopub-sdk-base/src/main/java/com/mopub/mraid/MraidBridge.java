@@ -72,6 +72,8 @@ public class MraidBridge {
         void onOpen(URI uri);
 
         void onPlayVideo(URI uri);
+
+        void onDirectClick(URI uri);
     }
 
     private final String FILTERED_JAVASCRIPT_SOURCE = MraidJavascript.JAVASCRIPT_SOURCE
@@ -358,7 +360,7 @@ public class MraidBridge {
                 }
 
                 if (mMraidBridgeListener != null){
-                    mMraidBridgeListener.onOpen(uri);
+                    mMraidBridgeListener.onDirectClick(uri);
                 }
 
                 mMraidWebView.getContext().startActivity(intent);
