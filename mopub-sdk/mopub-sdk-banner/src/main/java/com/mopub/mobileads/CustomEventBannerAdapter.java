@@ -26,7 +26,7 @@ import static com.mopub.mobileads.MoPubErrorCode.NETWORK_TIMEOUT;
 import static com.mopub.mobileads.MoPubErrorCode.UNSPECIFIED;
 
 public class CustomEventBannerAdapter implements CustomEventBannerListener {
-    public static final int DEFAULT_BANNER_TIMEOUT_DELAY = Constants.TEN_SECONDS_MILLIS;
+    public static final int DEFAULT_BANNER_TIMEOUT_DELAY = Constants.FOUR_SECONDS_MILLIS;
     private boolean mInvalidated;
     private MoPubView mMoPubView;
     private Context mContext;
@@ -154,13 +154,14 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
     }
 
     private int getTimeoutDelayMilliseconds() {
-        if (mMoPubView == null
-                || mMoPubView.getAdTimeoutDelay() == null
-                || mMoPubView.getAdTimeoutDelay() < 0) {
-            return DEFAULT_BANNER_TIMEOUT_DELAY;
-        }
-
-        return mMoPubView.getAdTimeoutDelay() * 1000;
+//        if (mMoPubView == null
+//                || mMoPubView.getAdTimeoutDelay() == null
+//                || mMoPubView.getAdTimeoutDelay() < 0) {
+//            return DEFAULT_BANNER_TIMEOUT_DELAY;
+//        }
+//
+//        return mMoPubView.getAdTimeoutDelay() * 1000;
+        return DEFAULT_BANNER_TIMEOUT_DELAY;
     }
 
     /*

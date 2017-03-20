@@ -15,6 +15,7 @@ public class Constants {
     public static final String POSITIONING_HANDLER = "/m/pos";
 
 
+    public static final int FOUR_SECONDS_MILLIS = 4 * 1000;
     public static final int TEN_SECONDS_MILLIS = 10 * 1000;
     public static final int THIRTY_SECONDS_MILLIS = 30 * 1000;
 
