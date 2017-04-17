@@ -37,6 +37,10 @@ public class Intents {
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         }
 
+        if (!TrackedContext.isIntentMarked(intent)){
+            TrackedContext.markIntent(intent);
+        }
+        
         try {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {

@@ -29,6 +29,7 @@ public class CustomEventBannerAdapterFactory {
             @NonNull Map<String, String> serverExtras,
             long broadcastIdentifier,
             @NonNull AdReport adReport) {
-        return new CustomEventBannerAdapter(moPubView, className, serverExtras, broadcastIdentifier, adReport);
+        return new CustomEventBannerAdapter(moPubView,moPubView.getTrackedContext(), className, serverExtras, broadcastIdentifier,
+                adReport);
     }
 }

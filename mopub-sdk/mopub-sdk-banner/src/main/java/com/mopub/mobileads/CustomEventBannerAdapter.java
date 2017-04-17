@@ -38,7 +38,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
     private final Runnable mTimeout;
     private boolean mStoredAutorefresh;
 
-    public CustomEventBannerAdapter(@NonNull MoPubView moPubView,
+    public CustomEventBannerAdapter(@NonNull MoPubView moPubView,Context context,
             @NonNull String className,
             @NonNull Map<String, String> serverExtras,
             long broadcastIdentifier,
@@ -46,7 +46,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
         Preconditions.checkNotNull(serverExtras);
         mHandler = new Handler();
         mMoPubView = moPubView;
-        mContext = moPubView.getContext();
+        mContext = context;
         mTimeout = new Runnable() {
             @Override
             public void run() {
