@@ -19,7 +19,7 @@ android {
 	defaultConfig {
 		versionCode 48
 		versionName version
-		minSdkVersion 9
+		minSdkVersion 16
 		targetSdkVersion 24
 		consumerProguardFiles '../proguard.txt'
 	}

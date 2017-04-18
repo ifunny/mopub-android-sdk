@@ -1079,6 +1079,33 @@ public class MraidController {
                 UrlAction.FOLLOW_DEEP_LINK)
                 .build().handleUrl(mContext, url);
     }
+    
+    public void onPause(){
+        if (mMraidWebView != null) {
+            mMraidWebView.onPause();
+        }
+        if (mTwoPartWebView != null) {
+            mTwoPartWebView.onPause();
+        }
+    }
+    
+    public void onResume(){
+        if (mMraidWebView != null) {
+            mMraidWebView.onResume();
+        }
+        if (mTwoPartWebView != null) {
+            mTwoPartWebView.onResume();
+        }
+    }
+    
+    public void onStop(){
+        if (mMraidWebView != null) {
+            mMraidWebView.setWebViewClient(null);
+        }
+        if (mTwoPartWebView != null) {
+            mTwoPartWebView.setWebViewClient(null);
+        }
+    }
 
     @VisibleForTesting
     @Deprecated // for testing

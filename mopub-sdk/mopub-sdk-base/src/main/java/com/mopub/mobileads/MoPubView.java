@@ -66,6 +66,8 @@ public class MoPubView extends FrameLayout {
 	
 	private Set<String> bannedAdapters;
 	
+	private boolean resumed;
+	
 	public MoPubView(Context context) {
 		this(context, null);
 	}
@@ -135,6 +137,9 @@ public class MoPubView extends FrameLayout {
 	}
 	
 	public void loadAd() {
+		if (!resumed){
+			return;
+		}
 		if (mAdViewController != null) {
 			mAdViewController.loadAd();
 		}
@@ -307,11 +312,34 @@ public class MoPubView extends FrameLayout {
 		}
 		
 		if (Visibility.isScreenVisible(visibility)) {
-			mAdViewController.unpauseRefresh();
-			resumeAdapter();
+			if (resumed) {
+				mAdViewController.unpauseRefresh();
+				resumeAdapter();
+			}
 		} else {
 			mAdViewController.pauseRefresh();
 			pauseAdapter();
+		}
+	}
+	
+	public void resume() {
+		if (!resumed) {
+			resumed = true;
+			if (mAdViewController != null) {
+				mAdViewController.unpauseRefresh();
+				resumeAdapter();
+				loadAd();
+			}
+		}
+	}
+	
+	public void pause() {
+		if (resumed) {
+			resumed = false;
+			if (mAdViewController != null) {
+				mAdViewController.pauseRefresh();
+				pauseAdapter();
+			}
 		}
 	}
 	

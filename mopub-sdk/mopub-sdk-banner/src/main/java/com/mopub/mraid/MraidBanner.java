@@ -99,8 +99,29 @@ class MraidBanner extends CustomEventBanner {
     private boolean extrasAreValid(Map<String, String> serverExtras) {
         return serverExtras.containsKey(HTML_RESPONSE_BODY_KEY);
     }
-
-    @VisibleForTesting
+    
+    @Override
+    protected void onPause() {
+	    if (mMraidController != null) {
+		    mMraidController.onPause();
+	    }
+    }
+    
+    @Override
+    protected void onResume() {
+	    if (mMraidController != null) {
+		    mMraidController.onResume();
+	    }
+    }
+	
+	@Override
+	protected void onStop() {
+		if (mMraidController != null) {
+			mMraidController.onStop();
+		}
+	}
+	
+	@VisibleForTesting
     public void setDebugListener(@Nullable MraidWebViewDebugListener debugListener) {
         mDebugListener = debugListener;
         if (mMraidController != null) {

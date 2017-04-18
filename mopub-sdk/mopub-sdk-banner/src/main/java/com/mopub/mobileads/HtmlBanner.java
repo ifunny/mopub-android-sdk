@@ -57,7 +57,19 @@ public class HtmlBanner extends CustomEventBanner {
             mHtmlBannerWebView.destroy();
         }
     }
-
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mHtmlBannerWebView.onPause();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHtmlBannerWebView.onResume();
+    }
+    
     @Override
     protected void onStop() {
         mHtmlBannerWebView.setWebViewClient(null);
