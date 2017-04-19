@@ -291,7 +291,7 @@ public class AdViewController {
                 mMoPubView.adNetworkTimed();
             }
             else {
-                mMoPubView.adNetworkFailed();
+                mMoPubView.adNetworkFailed(errorCode);
             }
 
             mMoPubView.stopAdapter();
