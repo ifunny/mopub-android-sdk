@@ -23,10 +23,10 @@ import com.mopub.common.CloseableLayout.ClosePosition;
 import com.mopub.common.Constants;
 import com.mopub.common.VisibleForTesting;
 import com.mopub.common.logging.MoPubLog;
+import com.mopub.common.util.TrackedContext;
 import com.mopub.mobileads.BaseWebView;
 import com.mopub.mobileads.ViewGestureDetector;
 import com.mopub.mobileads.ViewGestureDetector.UserClickListener;
-import com.mopub.mobileads.resource.MraidJavascript;
 import com.mopub.mobileads.util.WebViews;
 import com.mopub.mraid.MraidBridge.MraidWebView.OnVisibilityChangedListener;
 import com.mopub.mraid.MraidNativeCommandHandler.MraidCommandFailureListener;
@@ -75,10 +75,6 @@ public class MraidBridge {
         void onDirectClick(URI uri);
     }
 
-    private final String FILTERED_JAVASCRIPT_SOURCE = MraidJavascript.JAVASCRIPT_SOURCE
-            .replaceAll("(?m)^\\s+", "")
-            .replaceAll("(?m)^//.*(?=\\n)", "");
-
     @NonNull private final PlacementType mPlacementType;
 
     @NonNull private final MraidNativeCommandHandler mMraidNativeCommandHandler;
@@ -117,7 +113,6 @@ public class MraidBridge {
             }
         }
 
-        mMraidWebView.loadUrl("javascript:" + FILTERED_JAVASCRIPT_SOURCE);
         mMraidWebView.setScrollContainer(false);
         mMraidWebView.setVerticalScrollBarEnabled(false);
         mMraidWebView.setHorizontalScrollBarEnabled(false);
@@ -287,13 +282,7 @@ public class MraidBridge {
         }
     }
 
-    private final WebViewClient mMraidWebViewClient = new WebViewClient() {
-        @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            MoPubLog.d("Error: " + description);
-            super.onReceivedError(view, errorCode, description, failingUrl);
-        }
-
+    private final WebViewClient mMraidWebViewClient = new MraidWebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull String url) {
             return handleShouldOverrideUrl(url);
@@ -302,6 +291,13 @@ public class MraidBridge {
         @Override
         public void onPageFinished(@NonNull WebView view, @NonNull String url) {
             handlePageFinished();
+        }
+
+        @Override
+        public void onReceivedError(@NonNull WebView view, int errorCode,
+                @NonNull String description, @NonNull String failingUrl) {
+            MoPubLog.d("Error: " + description);
+            super.onReceivedError(view, errorCode, description, failingUrl);
         }
     };
 
@@ -352,6 +348,7 @@ public class MraidBridge {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
+            TrackedContext.markIntent(intent);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             try {
@@ -606,7 +603,7 @@ public class MraidBridge {
                 + stringifyRect(screenMetrics.getDefaultAdRectDips())
                 + ")");
         injectJavaScript("mraidbridge.notifySizeChangeEvent("
-                + stringifySize(screenMetrics.getCurrentAdRect())
+                + stringifySize(screenMetrics.getCurrentAdRectDips())
                 + ")");
     }
 

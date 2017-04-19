@@ -41,7 +41,12 @@ public class AdResponse implements Serializable {
     @Nullable
     private final String mRewardedVideoCurrencyAmount;
     @Nullable
+    private final String mRewardedCurrencies;
+    @Nullable
     private final String mRewardedVideoCompletionUrl;
+    @Nullable
+    private final Integer mRewardedDuration;
+    private final boolean mShouldRewardOnClick;
 
     @Nullable
     private final String mRedirectUrl;
@@ -97,7 +102,10 @@ public class AdResponse implements Serializable {
 
         mRewardedVideoCurrencyName = builder.rewardedVideoCurrencyName;
         mRewardedVideoCurrencyAmount = builder.rewardedVideoCurrencyAmount;
+        mRewardedCurrencies = builder.rewardedCurrencies;
         mRewardedVideoCompletionUrl = builder.rewardedVideoCompletionUrl;
+        mRewardedDuration = builder.rewardedDuration;
+        mShouldRewardOnClick = builder.shouldRewardOnClick;
 
         mRedirectUrl = builder.redirectUrl;
         mClickTrackingUrl = builder.clickTrackingUrl;
@@ -204,8 +212,22 @@ public class AdResponse implements Serializable {
     }
 
     @Nullable
+    public String getRewardedCurrencies() {
+        return mRewardedCurrencies;
+    }
+
+    @Nullable
     public String getRewardedVideoCompletionUrl() {
         return mRewardedVideoCompletionUrl;
+    }
+
+    @Nullable
+    public Integer getRewardedDuration() {
+        return mRewardedDuration;
+    }
+
+    public boolean shouldRewardOnClick() {
+        return mShouldRewardOnClick;
     }
 
     @Nullable
@@ -291,6 +313,12 @@ public class AdResponse implements Serializable {
         return new Builder()
                 .setAdType(mAdType)
                 .setNetworkType(mNetworkType)
+                .setRewardedVideoCurrencyName(mRewardedVideoCurrencyName)
+                .setRewardedVideoCurrencyAmount(mRewardedVideoCurrencyAmount)
+                .setRewardedCurrencies(mRewardedCurrencies)
+                .setRewardedVideoCompletionUrl(mRewardedVideoCompletionUrl)
+                .setRewardedDuration(mRewardedDuration)
+                .setShouldRewardOnClick(mShouldRewardOnClick)
                 .setRedirectUrl(mRedirectUrl)
                 .setClickTrackingUrl(mClickTrackingUrl)
                 .setImpressionTrackingUrl(mImpressionTrackingUrl)
@@ -315,7 +343,10 @@ public class AdResponse implements Serializable {
 
         private String rewardedVideoCurrencyName;
         private String rewardedVideoCurrencyAmount;
+        private String rewardedCurrencies;
         private String rewardedVideoCompletionUrl;
+        private Integer rewardedDuration;
+        private boolean shouldRewardOnClick;
 
         private String redirectUrl;
         private String clickTrackingUrl;
@@ -371,9 +402,24 @@ public class AdResponse implements Serializable {
             return this;
         }
 
+        public Builder setRewardedCurrencies(@Nullable final String rewardedCurrencies) {
+            this.rewardedCurrencies = rewardedCurrencies;
+            return this;
+        }
+
         public Builder setRewardedVideoCompletionUrl(
                 @Nullable final String rewardedVideoCompletionUrl) {
             this.rewardedVideoCompletionUrl = rewardedVideoCompletionUrl;
+            return this;
+        }
+
+        public Builder setRewardedDuration(@Nullable final Integer rewardedDuration) {
+            this.rewardedDuration = rewardedDuration;
+            return this;
+        }
+
+        public Builder setShouldRewardOnClick(final boolean shouldRewardOnClick) {
+            this.shouldRewardOnClick = shouldRewardOnClick;
             return this;
         }
 

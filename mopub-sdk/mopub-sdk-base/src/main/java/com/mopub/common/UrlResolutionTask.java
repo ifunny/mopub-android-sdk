@@ -17,137 +17,139 @@ import java.net.URL;
 
 @VisibleForTesting
 public class UrlResolutionTask extends AsyncTask<String, Void, String> {
-    private static final int REDIRECT_LIMIT = 10;
-
-    interface UrlResolutionListener {
-        void onSuccess(@NonNull final String resolvedUrl);
-        void onFailure(@NonNull final String message, @Nullable final Throwable throwable);
-    }
-
-    @NonNull private final UrlResolutionListener mListener;
-
-    public static void getResolvedUrl(@NonNull final String urlString,
-            @NonNull final UrlResolutionListener listener) {
-        final UrlResolutionTask urlResolutionTask = new UrlResolutionTask(listener);
-
-        try {
-            AsyncTasks.safeExecuteOnExecutor(urlResolutionTask, urlString);
-        } catch (Exception e) {
-            listener.onFailure("Failed to resolve url", e);
-        }
-    }
-
-    UrlResolutionTask(@NonNull UrlResolutionListener listener) {
-        mListener = listener;
-    }
-
-    @Nullable
-    @Override
-    protected String doInBackground(@Nullable String... urls) {
-        if (urls == null || urls.length == 0) {
-            return null;
-        }
-
-        String previousUrl = null;
-        try {
-            String locationUrl = urls[0];
-
-            int redirectCount = 0;
-            while (locationUrl != null && redirectCount < REDIRECT_LIMIT) {
-                // if location url is not http(s), assume it's an Android deep link
-                // this scheme will fail URL validation so we have to check early
-                if (!UrlAction.OPEN_IN_APP_BROWSER.shouldTryHandlingUrl(Uri.parse(locationUrl))) {
-                    return locationUrl;
-                }
-
-                previousUrl = locationUrl;
-                locationUrl = getRedirectLocation(locationUrl);
-                redirectCount++;
-            }
-
-        } catch (IOException e) {
-            return null;
-        } catch (URISyntaxException e) {
-            return null;
-        }
-
-        return previousUrl;
-    }
-
-    @Nullable
-    private String getRedirectLocation(@NonNull final String urlString) throws IOException,
-            URISyntaxException {
-        final URL url = new URL(urlString);
-
-        HttpURLConnection httpUrlConnection = null;
-        try {
-            httpUrlConnection = (HttpURLConnection) url.openConnection();
-            httpUrlConnection.setInstanceFollowRedirects(false);
-
-            return resolveRedirectLocation(urlString, httpUrlConnection);
-        } catch (java.lang.IllegalStateException e) {
-            //java.lang.IllegalStateException possible from com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode -> com.android.okhttp.internal.DiskLruCache.checkNotClosed
-            //Throw a new IOException like resolveRedirectLocation would for a similar IO error
-           throw new IOException("Unable to resolve URL due to IllegalStateException", e);
-        } finally {
-            if (httpUrlConnection != null) {
-                httpUrlConnection.disconnect();
-            }
-        }
-    }
-
-    @VisibleForTesting
-    @Nullable
-    static String resolveRedirectLocation(@NonNull final String baseUrl,
-            @NonNull final HttpURLConnection httpUrlConnection) throws IOException, URISyntaxException {
-        final URI baseUri = new URI(baseUrl);
-        final int responseCode = httpUrlConnection.getResponseCode();
-        final String redirectUrl = httpUrlConnection.getHeaderField("Location");
-        String result = null;
-
-        if (responseCode >= 300 && responseCode < 400) {
-
-            if (TextUtils.isEmpty(redirectUrl)){
-                throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
-            }
-
-            try {
-                // If redirectUrl is a relative path, then resolve() will correctly complete the path;
-                // otherwise, resolve() will return the redirectUrl
-                String encodedRedirectUrl = encodeUriParameters(redirectUrl);
-                result = baseUri.resolve(encodedRedirectUrl).toString();
-            } catch (IllegalArgumentException| MalformedURLException | URISyntaxException e) {
-                // Ensure the request is cancelled instead of resolving an intermediary URL
-                throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    protected void onPostExecute(@Nullable final String resolvedUrl) {
-        super.onPostExecute(resolvedUrl);
-
-        if (isCancelled() || resolvedUrl == null) {
-            onCancelled();
-        } else {
-            mListener.onSuccess(resolvedUrl);
-        }
-    }
-
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
-
-        mListener.onFailure("Task for resolving url was cancelled", null);
-    }
-
-    private static String encodeUriParameters(String locationUrl) throws MalformedURLException, URISyntaxException{
-        URL url = new URL(locationUrl);
-        URI uri = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
-        return uri.toString();
-    }
+	private static final int REDIRECT_LIMIT = 10;
+	
+	interface UrlResolutionListener {
+		void onSuccess(@NonNull final String resolvedUrl);
+		
+		void onFailure(@NonNull final String message, @Nullable final Throwable throwable);
+	}
+	
+	@NonNull private final UrlResolutionListener mListener;
+	
+	public static void getResolvedUrl(@NonNull final String urlString,
+	                                  @NonNull final UrlResolutionListener listener) {
+		final UrlResolutionTask urlResolutionTask = new UrlResolutionTask(listener);
+		
+		try {
+			AsyncTasks.safeExecuteOnExecutor(urlResolutionTask, urlString);
+		} catch (Exception e) {
+			listener.onFailure("Failed to resolve url", e);
+		}
+	}
+	
+	UrlResolutionTask(@NonNull UrlResolutionListener listener) {
+		mListener = listener;
+	}
+	
+	@Nullable
+	@Override
+	protected String doInBackground(@Nullable String... urls) {
+		if (urls == null || urls.length == 0) {
+			return null;
+		}
+		
+		String previousUrl = null;
+		try {
+			String locationUrl = urls[0];
+			
+			int redirectCount = 0;
+			while (locationUrl != null && redirectCount < REDIRECT_LIMIT) {
+				// if location url is not http(s), assume it's an Android deep link
+				// this scheme will fail URL validation so we have to check early
+				if (!UrlAction.OPEN_IN_APP_BROWSER.shouldTryHandlingUrl(Uri.parse(locationUrl))) {
+					return locationUrl;
+				}
+				
+				previousUrl = locationUrl;
+				locationUrl = getRedirectLocation(locationUrl);
+				redirectCount++;
+			}
+			
+		} catch (IOException e) {
+			return null;
+		} catch (URISyntaxException e) {
+			return null;
+		}
+		
+		return previousUrl;
+	}
+	
+	@Nullable
+	private String getRedirectLocation(@NonNull final String urlString) throws IOException,
+			URISyntaxException {
+		final URL url = new URL(urlString);
+		
+		HttpURLConnection httpUrlConnection = null;
+		try {
+			httpUrlConnection = (HttpURLConnection) url.openConnection();
+			httpUrlConnection.setInstanceFollowRedirects(false);
+			
+			return resolveRedirectLocation(urlString, httpUrlConnection);
+		} catch (java.lang.IllegalStateException e) {
+			//java.lang.IllegalStateException possible from com.android.okhttp.internal.huc.HttpURLConnectionImpl.getResponseCode -> com
+			// .android.okhttp.internal.DiskLruCache.checkNotClosed
+			//Throw a new IOException like resolveRedirectLocation would for a similar IO error
+			throw new IOException("Unable to resolve URL due to IllegalStateException", e);
+		} finally {
+			if (httpUrlConnection != null) {
+				httpUrlConnection.disconnect();
+			}
+		}
+	}
+	
+	@VisibleForTesting
+	@Nullable
+	static String resolveRedirectLocation(@NonNull final String baseUrl,
+	                                      @NonNull final HttpURLConnection httpUrlConnection) throws IOException, URISyntaxException {
+		final URI baseUri = new URI(baseUrl);
+		final int responseCode = httpUrlConnection.getResponseCode();
+		final String redirectUrl = httpUrlConnection.getHeaderField("Location");
+		String result = null;
+		
+		if (responseCode >= 300 && responseCode < 400) {
+			
+			if (TextUtils.isEmpty(redirectUrl)) {
+				throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
+			}
+			
+			try {
+				// If redirectUrl is a relative path, then resolve() will correctly complete the path;
+				// otherwise, resolve() will return the redirectUrl
+				String encodedRedirectUrl = encodeUriParameters(redirectUrl);
+				result = baseUri.resolve(encodedRedirectUrl).toString();
+			} catch (IllegalArgumentException | MalformedURLException | URISyntaxException e) {
+				// Ensure the request is cancelled instead of resolving an intermediary URL
+				throw new URISyntaxException(redirectUrl, "Unable to parse invalid URL");
+			}
+		}
+		
+		return result;
+	}
+	
+	@Override
+	protected void onPostExecute(@Nullable final String resolvedUrl) {
+		super.onPostExecute(resolvedUrl);
+		
+		if (isCancelled() || resolvedUrl == null) {
+			onCancelled();
+		} else {
+			mListener.onSuccess(resolvedUrl);
+		}
+	}
+	
+	@Override
+	protected void onCancelled() {
+		super.onCancelled();
+		
+		mListener.onFailure("Task for resolving url was cancelled", null);
+	}
+	
+	private static String encodeUriParameters(String locationUrl) throws MalformedURLException, URISyntaxException {
+		Uri uriRow = Uri.parse(locationUrl);
+		URI uri = new URI(uriRow.getScheme(), uriRow.getHost(), uriRow.getEncodedPath(), uriRow.getEncodedQuery(), null);
+		return uri.toString();
+	}
 }
 
 
