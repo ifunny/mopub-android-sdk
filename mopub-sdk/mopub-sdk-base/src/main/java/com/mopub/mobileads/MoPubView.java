@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.mobileads;
 
 import android.app.Activity;
