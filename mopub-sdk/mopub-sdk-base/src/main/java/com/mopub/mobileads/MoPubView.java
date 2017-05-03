@@ -514,7 +514,9 @@ public class MoPubView extends FrameLayout {
 	
 	public Context getTrackedContext() {
 		Context context = getContext();
-		return new TrackedContext(context);
+		TrackedContext trackedContext = new TrackedContext(context.getApplicationContext());
+		trackedContext.attachActivityContext(getActivity());
+		return trackedContext;
 	}
 
     /**
