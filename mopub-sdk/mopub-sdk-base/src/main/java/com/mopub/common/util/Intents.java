@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.common.util;
 
 import android.app.Activity;
@@ -62,6 +63,10 @@ public class Intents {
 
         if (extras != null) {
             intent.putExtras(extras);
+        }
+    
+        if (!TrackedContext.isIntentMarked(intent)){
+            TrackedContext.markIntent(intent);
         }
 
         return intent;
