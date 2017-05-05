@@ -59,6 +59,7 @@ public class MoPubView extends FrameLayout {
 	
 	private Set<String> bannedAdapters;
 	private boolean resumed;
+	private boolean destoyed;
 	
 	
 	public MoPubView(Context context) {
@@ -145,6 +146,11 @@ public class MoPubView extends FrameLayout {
      * Activity's onDestroy implementation must include a call to this method.
      */
     public void destroy() {
+	    if (destoyed){
+		    return;
+	    }
+	    
+	    destoyed = true;
         unregisterScreenStateBroadcastReceiver();
         removeAllViews();
 
@@ -158,8 +164,14 @@ public class MoPubView extends FrameLayout {
             mCustomEventBannerAdapter = null;
         }
     }
-
-    private void invalidateAdapter() {
+    
+    @Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+	    destroy();
+	}
+	
+	private void invalidateAdapter() {
         if (mCustomEventBannerAdapter != null) {
             try {
                 new Reflection.MethodBuilder(mCustomEventBannerAdapter, "invalidate")
