@@ -53,6 +53,7 @@ public class HtmlBanner extends CustomEventBanner {
 
     @Override
     protected void onInvalidate() {
+        super.onInvalidate();
         if (mHtmlBannerWebView != null) {
             mHtmlBannerWebView.destroy();
         }

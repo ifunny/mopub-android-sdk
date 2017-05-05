@@ -90,6 +90,7 @@ class MraidBanner extends CustomEventBanner {
 
     @Override
     protected void onInvalidate() {
+        super.onInvalidate();
         if (mMraidController != null) {
             mMraidController.setMraidListener(null);
             mMraidController.destroy();

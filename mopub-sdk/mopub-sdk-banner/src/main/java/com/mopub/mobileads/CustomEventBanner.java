@@ -1,6 +1,7 @@
 package com.mopub.mobileads;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 import android.view.View;
 
 import java.util.Map;
@@ -14,6 +15,8 @@ import java.util.Map;
  * and invoke its loadAd() method.
  */
 public abstract class CustomEventBanner {
+    
+    private boolean isInvalidated = false;
     
     /*
      * When the MoPub SDK receives a response indicating it should load a custom event, it will send
@@ -36,7 +39,10 @@ public abstract class CustomEventBanner {
     /*
      * Called when a Custom Event is being invalidated or destroyed. Perform any final cleanup here.
      */
-    protected abstract void onInvalidate();
+    @CallSuper
+    protected void onInvalidate(){
+        isInvalidated = true;
+    }
 
     protected void onStop(){
 
@@ -48,6 +54,10 @@ public abstract class CustomEventBanner {
 
     protected void onResume(){
 
+    }
+    
+    public boolean isInvalidated() {
+        return isInvalidated;
     }
     
     public interface CustomEventBannerListener {
