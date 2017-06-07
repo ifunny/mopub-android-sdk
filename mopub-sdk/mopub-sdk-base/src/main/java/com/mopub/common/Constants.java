@@ -16,6 +16,7 @@ public class Constants {
 
 
     public static final int FOUR_SECONDS_MILLIS = 4 * 1000;
+    public static final int SIX_SECONDS_MILLIS = 6 * 1000;
     public static final int TEN_SECONDS_MILLIS = 10 * 1000;
     public static final int THIRTY_SECONDS_MILLIS = 30 * 1000;
 
