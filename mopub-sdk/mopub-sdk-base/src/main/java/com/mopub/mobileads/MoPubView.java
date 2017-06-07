@@ -60,7 +60,7 @@ public class MoPubView extends FrameLayout {
 	private Set<String> bannedAdapters;
 	private boolean resumed;
 	private boolean destoyed;
-	
+	private boolean pauseOnVisibilityChange;
 	
 	public MoPubView(Context context) {
         this(context, null);
@@ -77,6 +77,7 @@ public class MoPubView extends FrameLayout {
 
         setHorizontalScrollBarEnabled(false);
         setVerticalScrollBarEnabled(false);
+	    setPauseOnVisibilityChange(true);
 
         try {
             // There is a rare bug in Froyo/2.2 where creation of a WebView causes a
@@ -306,12 +307,12 @@ public class MoPubView extends FrameLayout {
 	@Override
 	protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
 		super.onVisibilityChanged(changedView, visibility);
-//		if (changedView == this) {
-//			if (Visibility.hasScreenVisibilityChanged(mScreenVisibility, visibility)) {
-//				mScreenVisibility = visibility;
-//				setAdVisibility(mScreenVisibility);
-//			}
-//		}
+		if (changedView == this && pauseOnVisibilityChange) {
+			if (Visibility.hasScreenVisibilityChanged(mScreenVisibility, visibility)) {
+				mScreenVisibility = visibility;
+				setAdVisibility(mScreenVisibility);
+			}
+		}
 	}
 	
 	private void setAdVisibility(final int visibility) {
@@ -530,8 +531,12 @@ public class MoPubView extends FrameLayout {
 		trackedContext.attachActivityContext(getActivity());
 		return trackedContext;
 	}
-
-    /**
+	
+	public void setPauseOnVisibilityChange(boolean pauseOnVisibilityChange) {
+		this.pauseOnVisibilityChange = pauseOnVisibilityChange;
+	}
+	
+	/**
      * @deprecated As of release 4.4.0
      */
     @Deprecated
