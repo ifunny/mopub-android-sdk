@@ -53,7 +53,6 @@ public class MoPubView extends FrameLayout {
 
     private Context mContext;
     private int mScreenVisibility;
-    private BroadcastReceiver mScreenStateReceiver;
 
     private BannerAdListener mBannerAdListener;
 	
@@ -99,37 +98,6 @@ public class MoPubView extends FrameLayout {
         }
 
         mAdViewController = AdViewControllerFactory.create(context, this);
-        registerScreenStateBroadcastReceiver();
-    }
-
-    private void registerScreenStateBroadcastReceiver() {
-        mScreenStateReceiver = new BroadcastReceiver() {
-            public void onReceive(final Context context, final Intent intent) {
-                if (!Visibility.isScreenVisible(mScreenVisibility) || intent == null) {
-                    return;
-                }
-
-                final String action = intent.getAction();
-
-                if (Intent.ACTION_USER_PRESENT.equals(action)) {
-                    setAdVisibility(View.VISIBLE);
-                } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                    setAdVisibility(View.GONE);
-                }
-            }
-        };
-
-        final IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        mContext.registerReceiver(mScreenStateReceiver, filter);
-    }
-
-    private void unregisterScreenStateBroadcastReceiver() {
-        try {
-            mContext.unregisterReceiver(mScreenStateReceiver);
-        } catch (Exception IllegalArgumentException) {
-            MoPubLog.d("Failed to unregister screen state broadcast receiver (never registered).");
-        }
     }
 
     public void loadAd() {
@@ -152,7 +120,6 @@ public class MoPubView extends FrameLayout {
 	    }
 	    
 	    destoyed = true;
-        unregisterScreenStateBroadcastReceiver();
         removeAllViews();
 
         if (mAdViewController != null) {
