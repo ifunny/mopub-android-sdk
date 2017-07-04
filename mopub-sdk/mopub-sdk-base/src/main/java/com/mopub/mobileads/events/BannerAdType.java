@@ -11,7 +11,6 @@ public enum BannerAdType {
 	Facebook("Facebook"),
 	Millennial("Millennial"),
 	Inneractive("Inneractive"),
-	Amazon("Amazon"),
 	InMobi("InMobi"),
 	Flurry("Flurry"),
 	Mobfox("Mobfox");
@@ -36,9 +35,6 @@ public enum BannerAdType {
 			}
 			case "com.mopub.mobileads.AdMobWCPMFloor": {
 				return AdMobECPM;
-			}
-			case "com.mopub.mobileads.AmazonBanner": {
-				return Amazon;
 			}
 			case "com.mopub.mobileads.FacebookBanner": {
 				return Facebook;
