@@ -2,10 +2,7 @@
 package com.mopub.mobileads;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -136,7 +133,7 @@ public class MoPubView extends FrameLayout {
     @Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
-	    destroy();
+	    pause();
 	}
 	
 	private void invalidateAdapter() {
