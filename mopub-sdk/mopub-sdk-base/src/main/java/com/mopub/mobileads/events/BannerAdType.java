@@ -9,22 +9,20 @@ public enum BannerAdType {
 	MopubHTML("MoPubHTML"),
 	MopubMRAID("MoPubMRAID"),
 	Facebook("Facebook"),
-	Millennial("Millennial"),
 	Inneractive("Inneractive"),
 	InMobi("InMobi"),
-	Flurry("Flurry"),
-	Mobfox("Mobfox");
-
+	OpenX("OpenX");
+	
 	private String name;
-
+	
 	BannerAdType(String name) {
 		this.name = name;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public static BannerAdType fromAdapterClass(String className) {
 		if (className == null) {
 			return MopubHTML;
@@ -45,11 +43,8 @@ public enum BannerAdType {
 			case "com.mopub.mobileads.InneractiveBanner": {
 				return Inneractive;
 			}
-			case "com.mopub.mobileads.MillennialBanner": {
-				return Millennial;
-			}
-			case "com.mopub.mobileads.FlurryCustomEventBanner": {
-				return Flurry;
+			case "com.mopub.mobileads.OpenXBanner": {
+				return OpenX;
 			}
 			case "com.mopub.mobileads.InMobiBannerCustomEvent": {
 				return InMobi;
@@ -59,9 +54,6 @@ public enum BannerAdType {
 			}
 			case "com.mopub.mraid.MraidBanner": {
 				return MopubMRAID;
-			}
-			case "com.mopub.mobileads.MobfoxBanner": {
-				return Mobfox;
 			}
 			default: {
 				return MopubHTML;
