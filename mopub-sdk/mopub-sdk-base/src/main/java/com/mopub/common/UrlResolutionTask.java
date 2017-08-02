@@ -103,8 +103,16 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
 	static String resolveRedirectLocation(@NonNull final String baseUrl,
 	                                      @NonNull final HttpURLConnection httpUrlConnection) throws IOException, URISyntaxException {
 		final URI baseUri = new URI(baseUrl);
-		final int responseCode = httpUrlConnection.getResponseCode();
-		final String redirectUrl = httpUrlConnection.getHeaderField("Location");
+		final int responseCode;
+		final String redirectUrl;
+		
+		try {
+			responseCode = httpUrlConnection.getResponseCode();
+			redirectUrl = httpUrlConnection.getHeaderField("Location");
+		} catch (IllegalArgumentException | MalformedURLException e) {
+			throw new URISyntaxException(baseUri.toString(), "Unable to parse invalid URL");
+		}
+		
 		String result = null;
 		
 		if (responseCode >= 300 && responseCode < 400) {
