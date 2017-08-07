@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.mopub.common.Constants.AD_EXPIRATION_DELAY;
 import static com.mopub.nativeads.MoPubNative.MoPubNativeNetworkListener;
 
 /**
@@ -38,7 +39,7 @@ class NativeAdSource {
      */
     private static final int CACHE_LIMIT = 1;
 
-    private static final int EXPIRATION_TIME_MILLISECONDS = 15 * 60 * 1000; // 15 minutes
+    private static final int EXPIRATION_TIME_MILLISECONDS = AD_EXPIRATION_DELAY;
     private static final int MAXIMUM_RETRY_TIME_MILLISECONDS = 5 * 60 * 1000; // 5 minutes.
     @VisibleForTesting static final int[] RETRY_TIME_ARRAY_MILLISECONDS = new int[]{1000, 3000, 5000, 25000, 60000, MAXIMUM_RETRY_TIME_MILLISECONDS};
 
