@@ -11,4 +11,5 @@ public class DefaultBannerAdListener implements BannerAdListener {
     @Override public void onBannerCollapsed(MoPubView banner) { }
     @Override public void onBannerLoadStarted(MoPubView banner) {}
     @Override public void onBannerNetworkTimed(MoPubView banner) {}
+    @Override public void onBannerIdle(MoPubView banner) { }
 }

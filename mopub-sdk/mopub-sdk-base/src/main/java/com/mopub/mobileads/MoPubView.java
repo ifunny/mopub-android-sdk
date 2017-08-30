@@ -38,6 +38,7 @@ public class MoPubView extends FrameLayout {
 	    public void onBannerClicked(MoPubView banner);
 	    public void onBannerExpanded(MoPubView banner);
 	    public void onBannerCollapsed(MoPubView banner);
+	    public void onBannerIdle(MoPubView banner);
     }
 
     private static final String CUSTOM_EVENT_BANNER_ADAPTER_FACTORY =
