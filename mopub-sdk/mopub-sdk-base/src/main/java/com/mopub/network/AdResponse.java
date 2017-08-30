@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.network;
 
 import android.support.annotation.NonNull;
@@ -21,10 +22,13 @@ public class AdResponse implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String TIER_NAME = "name";
     private static final String MARKER_OFFSET = "marker_offset";
+    private static final String ROTATION_RATE = "rotation_rate";
     private static final String TIER_NAME_REGEX = "\"funcorp_tier_name\"=\"([^\"]+)\"";
     private static final String MARKER_OFFSET_REGEX = "\"funcorp_tier_marker_offset\"=\"(\\d+)\"";
+    private static final String ROTATION_RATE_REGEX = "\"funcorp_rotation_rate\"=\"(\\d+)\"";
     private static final Pattern tierNamePattern = Pattern.compile(TIER_NAME_REGEX, Pattern.CASE_INSENSITIVE);
     private static final Pattern markerOffsetPattern = Pattern.compile(MARKER_OFFSET_REGEX, Pattern.CASE_INSENSITIVE);
+    private static final Pattern rotationRatePattern = Pattern.compile(ROTATION_RATE_REGEX, Pattern.CASE_INSENSITIVE);
 
     @Nullable
     private final String mAdType;
@@ -95,9 +99,11 @@ public class AdResponse implements Serializable {
 
     @Nullable
     private  Integer markerOffset;
+    
+    @Nullable
+    private Integer rotationRate;
 
     private AdResponse(@NonNull Builder builder) {
-
         mAdType = builder.adType;
         mAdUnitId = builder.adUnitId;
         mFullAdType = builder.fullAdType;
@@ -130,18 +136,23 @@ public class AdResponse implements Serializable {
         mTimestamp = DateAndTime.now().getTime();
 
         String stringOffset;
+        String stringRate;
         if (mServerExtras.containsKey(DataKeys.HTML_RESPONSE_BODY_KEY)) {
             String data = mServerExtras.get(DataKeys.HTML_RESPONSE_BODY_KEY);
 
             tierName = getFirstMatchedGroup(data, tierNamePattern);
             stringOffset = getFirstMatchedGroup(data, markerOffsetPattern);
+            stringRate = getFirstMatchedGroup(data, rotationRatePattern);
         }
         else {
             tierName = mServerExtras.get(TIER_NAME);
             stringOffset = mServerExtras.get(MARKER_OFFSET);
+            stringRate = mServerExtras.get(ROTATION_RATE);
         }
 
         markerOffset = stringToInt(stringOffset);
+        rotationRate = stringToInt(stringRate);
+        
     }
 
     private String getFirstMatchedGroup(String data, Pattern pattern) {
@@ -314,6 +325,11 @@ public class AdResponse implements Serializable {
     @Nullable
     public Integer getMarkerOffset() {
         return markerOffset;
+    }
+    
+    @Nullable
+    public Integer getRotationRate() {
+	    return rotationRate;
     }
 
     public Builder toBuilder() {
