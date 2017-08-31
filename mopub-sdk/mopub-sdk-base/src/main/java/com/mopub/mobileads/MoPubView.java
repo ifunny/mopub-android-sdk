@@ -30,15 +30,14 @@ import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
 
 public class MoPubView extends FrameLayout {
     public interface BannerAdListener {
-	    public void onBannerLoadStarted(MoPubView banner);
-	    public void onBannerLoaded(MoPubView banner);
-	    public void onBannerNetworkFailed(MoPubView banner, MoPubErrorCode errorCode);
-	    public void onBannerNetworkTimed(MoPubView banner);
-	    public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
-	    public void onBannerClicked(MoPubView banner);
-	    public void onBannerExpanded(MoPubView banner);
-	    public void onBannerCollapsed(MoPubView banner);
-	    public void onBannerIdle(MoPubView banner);
+	    void onBannerLoadStarted(MoPubView banner);
+	    void onBannerLoaded(MoPubView banner);
+	    void onBannerNetworkFailed(MoPubView banner, MoPubErrorCode errorCode);
+	    void onBannerNetworkTimed(MoPubView banner);
+	    void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode);
+	    void onBannerClicked(MoPubView banner);
+	    void onBannerExpanded(MoPubView banner);
+	    void onBannerCollapsed(MoPubView banner);
     }
 
     private static final String CUSTOM_EVENT_BANNER_ADAPTER_FACTORY =
