@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR;
 import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
 
 public class MoPubView extends FrameLayout {
@@ -239,6 +240,7 @@ public class MoPubView extends FrameLayout {
                         .execute();
             } catch (Exception e) {
                 MoPubLog.e("Error loading custom event", e);
+	            loadFailUrl(ADAPTER_CONFIGURATION_ERROR);
             }
         } else {
             MoPubLog.e("Could not load custom event -- missing banner module");
