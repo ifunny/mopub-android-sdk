@@ -13,6 +13,5 @@ public enum NativeAdType {
 	AdtoApp,
 	Flurry,
 	Mobfox,
-	AppLovin,
 	MyTarget
 }
