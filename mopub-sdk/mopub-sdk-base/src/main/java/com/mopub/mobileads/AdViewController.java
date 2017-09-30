@@ -24,6 +24,7 @@ import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.DeviceUtils;
 import com.mopub.common.util.Dips;
 import com.mopub.common.util.Utils;
+import com.mopub.mobileads.events.AdCreativeIdBundle;
 import com.mopub.mraid.MraidNativeCommandHandler;
 import com.mopub.network.AdRequest;
 import com.mopub.network.AdResponse;
@@ -66,6 +67,7 @@ public class AdViewController {
 	@Nullable private MoPubView mMoPubView;
 	@Nullable private WebViewAdUrlGenerator mUrlGenerator;
 	
+	@Nullable private AdCreativeIdBundle mAdCreativeIdBundle;
 	@Nullable private AdResponse mAdResponse;
 	@Nullable private String mCustomEventClassName;
 	private final Runnable mRefreshRunnable;
@@ -365,6 +367,11 @@ public class AdViewController {
 		return 0;
 	}
 	
+	@Nullable
+	public AdCreativeIdBundle getAdCreativeIdBundle() {
+		return mAdCreativeIdBundle;
+	}
+	
 	/**
 	 * This has been renamed to {@link #getCurrentAutoRefreshStatus()}.
 	 */
@@ -585,6 +592,10 @@ public class AdViewController {
 				}
 			}
 		});
+	}
+	
+	void setAdCreativeId(AdCreativeIdBundle adCreativeId){
+		mAdCreativeIdBundle = adCreativeId;
 	}
 	
 	private FrameLayout.LayoutParams getAdLayoutParams(View view) {

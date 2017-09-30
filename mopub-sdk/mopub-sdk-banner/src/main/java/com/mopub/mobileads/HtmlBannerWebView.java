@@ -28,7 +28,7 @@ public class HtmlBannerWebView extends BaseHtmlWebView {
 
         @Override
         public void onLoaded(BaseHtmlWebView htmlWebView) {
-            mCustomEventBannerListener.onBannerLoaded(htmlWebView);
+            mCustomEventBannerListener.onBannerLoaded(htmlWebView, null);
         }
 
         @Override

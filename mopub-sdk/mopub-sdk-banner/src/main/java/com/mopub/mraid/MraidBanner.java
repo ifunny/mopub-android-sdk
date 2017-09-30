@@ -56,7 +56,7 @@ class MraidBanner extends CustomEventBanner {
             public void onLoaded(View view) {
                 // Honoring the server dimensions forces the WebView to be the size of the banner
                 AdViewController.setShouldHonorServerDimensions(view);
-                mBannerListener.onBannerLoaded(view);
+                mBannerListener.onBannerLoaded(view, null);
             }
 
             @Override

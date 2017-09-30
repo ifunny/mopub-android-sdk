@@ -19,7 +19,7 @@ import com.mopub.common.util.ManifestUtils;
 import com.mopub.common.util.Reflection;
 import com.mopub.common.util.TrackedContext;
 import com.mopub.common.util.Visibility;
-import com.mopub.mobileads.factories.AdViewControllerFactory;
+import com.mopub.mobileads.events.AdCreativeIdBundle;import com.mopub.mobileads.factories.AdViewControllerFactory;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -443,6 +443,10 @@ public class MoPubView extends FrameLayout {
 
     public void setAdContentView(View view) {
         if (mAdViewController != null) mAdViewController.setAdContentView(view);
+    }
+    
+    public void setAdCreativeId(AdCreativeIdBundle creativeId) {
+        if (mAdViewController != null) mAdViewController.setAdCreativeId(creativeId);
     }
 
     public void setTesting(boolean testing) {
