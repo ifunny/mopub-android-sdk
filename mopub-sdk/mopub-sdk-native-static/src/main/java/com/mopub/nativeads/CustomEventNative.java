@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.nativeads;
 
 import android.content.Context;
@@ -89,7 +90,7 @@ public abstract class CustomEventNative {
     }
 
     protected final void notifyAdRequested() {
-        NativeAdEventsObserver.instance().onAdRequested(mNativeAdType, getTierName());
+        NativeAdEventsObserver.instance().onAdRequested(this, mNativeAdType, getTierName());
     }
 
     public NativeAdType getNativeAdType() {

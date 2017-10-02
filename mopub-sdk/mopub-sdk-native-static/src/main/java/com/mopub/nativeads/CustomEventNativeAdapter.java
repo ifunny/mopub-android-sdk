@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.nativeads;
 
 
@@ -90,7 +91,7 @@ final class CustomEventNativeAdapter {
         public void onNativeAdLoaded(BaseNativeAd nativeAd) {
 	        CustomEventNative eventNative = runningEvents.get(this);
             if (eventNative != null){
-                NativeAdEventsObserver.instance().onAdLoaded(eventNative.getNativeAdType(),eventNative.getTierName());
+                NativeAdEventsObserver.instance().onAdLoaded(eventNative, eventNative.getNativeAdType(),eventNative.getTierName());
                 listener.onNativeAdLoaded(nativeAd);
                 runningEvents.remove(this);
             }
@@ -101,7 +102,8 @@ final class CustomEventNativeAdapter {
 	        CustomEventNative eventNative = runningEvents.get(this);
             if (eventNative != null){
                 listener.onNativeAdFailed(errorCode);
-                NativeAdEventsObserver.instance().onAdNetworkFailed(eventNative.getNativeAdType(),eventNative.getTierName(),errorCode);
+                NativeAdEventsObserver.instance().onAdNetworkFailed(eventNative, eventNative.getNativeAdType(),eventNative.getTierName(),
+                        errorCode);
                 runningEvents.remove(this);
             }
         }
@@ -110,7 +112,8 @@ final class CustomEventNativeAdapter {
 	        CustomEventNative eventNative = runningEvents.get(this);
             if (eventNative != null){
                 listener.onNativeAdFailed(NativeErrorCode.NETWORK_TIMEOUT);
-	            NativeAdEventsObserver.instance().onAdCanceledByTimeout(eventNative.getNativeAdType(),eventNative.getTierName());
+	            NativeAdEventsObserver.instance().onAdCanceledByTimeout(eventNative, eventNative.getNativeAdType(),eventNative.getTierName
+                        ());
                 runningEvents.remove(this);
             }
         }

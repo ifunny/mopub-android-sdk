@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.nativeads;
 
 import android.content.Context;
@@ -211,8 +212,9 @@ public class NativeAd {
         if (mRecordedImpression || mIsDestroyed) {
             return;
         }
-
-        NativeAdEventsObserver.instance().onAdImpressed(mBaseNativeAd.getEventNative().getNativeAdType(), mBaseNativeAd.getEventNative()
+        CustomEventNative customEventNative = mBaseNativeAd.getEventNative();
+        
+        NativeAdEventsObserver.instance().onAdImpressed(customEventNative,customEventNative.getNativeAdType(), customEventNative
                 .getTierName());
 
         TrackingRequest.makeTrackingHttpRequest(mImpressionTrackers, mContext);
@@ -228,9 +230,10 @@ public class NativeAd {
         if (mIsClicked || mIsDestroyed) {
             return;
         }
+        
+        CustomEventNative customEventNative = mBaseNativeAd.getEventNative();
 
-        NativeAdEventsObserver.instance().onAdClicked(mBaseNativeAd.getEventNative().getNativeAdType(), mBaseNativeAd.getEventNative()
-                .getTierName());
+        NativeAdEventsObserver.instance().onAdClicked(customEventNative, customEventNative.getNativeAdType(), customEventNative.getTierName());
 
         TrackingRequest.makeTrackingHttpRequest(mClickTrackers, mContext);
         if (mMoPubNativeEventListener != null) {
