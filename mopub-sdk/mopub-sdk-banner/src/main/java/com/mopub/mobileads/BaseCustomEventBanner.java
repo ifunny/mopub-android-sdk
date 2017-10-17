@@ -1,9 +1,7 @@
 package com.mopub.mobileads;
 
 import android.content.Context;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +20,7 @@ public abstract class BaseCustomEventBanner extends CustomEventBanner {
 	@NonNull
 	protected CustomEventBannerListener mCustomEventBannerListener;
 	protected final List<String> mRequiredExtras;
+	private boolean mIsExpanded;
 	
 	public BaseCustomEventBanner() {
 		mRequiredExtras = new ArrayList<>();
@@ -70,4 +69,11 @@ public abstract class BaseCustomEventBanner extends CustomEventBanner {
 		return true;
 	}
 	
+	public boolean isExpanded() {
+		return mIsExpanded;
+	}
+	
+	public void setExpanded(final boolean expanded) {
+		mIsExpanded = expanded;
+	}
 }
