@@ -19,7 +19,8 @@ import com.mopub.common.util.ManifestUtils;
 import com.mopub.common.util.Reflection;
 import com.mopub.common.util.TrackedContext;
 import com.mopub.common.util.Visibility;
-import com.mopub.mobileads.events.AdCreativeIdBundle;import com.mopub.mobileads.factories.AdViewControllerFactory;
+import com.mopub.mobileads.events.AdCreativeIdBundle;
+import com.mopub.mobileads.factories.AdViewControllerFactory;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -127,6 +128,7 @@ public class MoPubView extends FrameLayout {
 
         if (mCustomEventBannerAdapter != null) {
             invalidateAdapter();
+	        destroyAdapter();
             mCustomEventBannerAdapter = null;
         }
     }
@@ -141,6 +143,18 @@ public class MoPubView extends FrameLayout {
         if (mCustomEventBannerAdapter != null) {
             try {
                 new Reflection.MethodBuilder(mCustomEventBannerAdapter, "invalidate")
+                        .setAccessible()
+                        .execute();
+            } catch (Exception e) {
+                MoPubLog.e("Error invalidating adapter", e);
+            }
+        }
+    }
+    
+    private void destroyAdapter() {
+        if (mCustomEventBannerAdapter != null) {
+            try {
+                new Reflection.MethodBuilder(mCustomEventBannerAdapter, "destroy")
                         .setAccessible()
                         .execute();
             } catch (Exception e) {

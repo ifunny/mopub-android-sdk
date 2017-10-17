@@ -146,6 +146,11 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		}
 	}
 	
+	@ReflectionTarget
+	void destroy() {
+		cancelTimeout();
+	}
+	
 	boolean isInvalidated() {
 		return mInvalidated;
 	}
@@ -164,6 +169,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 //        return mMoPubView.getAdTimeoutDelay() * 1000;
 		return DEFAULT_BANNER_TIMEOUT_DELAY;
 	}
+	
 	
 	/*
 	 * CustomEventBanner.Listener implementation
