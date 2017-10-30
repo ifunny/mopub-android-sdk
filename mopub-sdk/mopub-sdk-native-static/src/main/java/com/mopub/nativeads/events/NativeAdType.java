@@ -11,6 +11,7 @@ public enum NativeAdType {
 	Inneractive,
 	InMobi,
 	AdtoApp,
+	Appodeal,
 	Flurry,
 	Mobfox,
 	MyTarget
