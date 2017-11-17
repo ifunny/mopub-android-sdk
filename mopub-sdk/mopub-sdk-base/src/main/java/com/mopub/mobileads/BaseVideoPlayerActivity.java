@@ -82,7 +82,7 @@ public class BaseVideoPlayerActivity extends Activity {
 
         // VideoViews may never release audio focus, leaking the activity. See
         // https://code.google.com/p/android/issues/detail?id=152173.
-        AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        AudioManager am = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         if (am != null) {
             am.abandonAudioFocus(null);
         }

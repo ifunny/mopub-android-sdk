@@ -142,7 +142,7 @@ public class ClientMetadata {
     public ClientMetadata(Context context) {
         mContext = context.getApplicationContext();
         mConnectivityManager =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         mDeviceManufacturer = Build.MANUFACTURER;
         mDeviceModel = Build.MODEL;
         mDeviceProduct = Build.PRODUCT;
@@ -165,7 +165,7 @@ public class ClientMetadata {
         }
 
         final TelephonyManager telephonyManager =
-                (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+                (TelephonyManager) mContext.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         mNetworkOperatorForUrl = telephonyManager.getNetworkOperator();
         mNetworkOperator = telephonyManager.getNetworkOperator();
         if (telephonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA &&

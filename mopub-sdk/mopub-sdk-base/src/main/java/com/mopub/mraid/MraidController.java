@@ -357,7 +357,7 @@ public class MraidController {
     // onPageLoaded gets fired once the html is loaded into the webView.
     private int getDisplayRotation() {
         WindowManager wm = (WindowManager) mContext
-                .getSystemService(Context.WINDOW_SERVICE);
+                .getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         return wm.getDefaultDisplay().getRotation();
     }
 

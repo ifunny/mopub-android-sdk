@@ -84,7 +84,7 @@ public class DeviceUtils {
         // Otherwise, perform the connectivity check.
         try {
             final ConnectivityManager connnectionManager =
-                    (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             final NetworkInfo networkInfo = connnectionManager.getActiveNetworkInfo();
             return networkInfo.isConnected();
         } catch (NullPointerException e) {
@@ -93,7 +93,7 @@ public class DeviceUtils {
     }
 
     public static int memoryCacheSizeBytes(final Context context) {
-        final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        final ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
         long memoryClass = activityManager.getMemoryClass();
 
         try {
@@ -173,7 +173,7 @@ public class DeviceUtils {
             return;
         }
 
-        Display display = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        Display display = ((WindowManager) activity.getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         final int currentRotation = display.getRotation();
         final int deviceOrientation = activity.getResources().getConfiguration().orientation;
 
@@ -213,7 +213,7 @@ public class DeviceUtils {
         Integer bestWidthPixels = null;
         Integer bestHeightPixels = null;
 
-        final WindowManager windowManager = (WindowManager) context.getSystemService(
+        final WindowManager windowManager = (WindowManager) context.getApplicationContext().getSystemService(
                 Context.WINDOW_SERVICE);
         final Display display = windowManager.getDefaultDisplay();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {

@@ -15,7 +15,7 @@ public class MaxWidthImageLoader extends com.mopub.volley.toolbox.ImageLoader {
         super(queue, imageCache);
 
         // Get Display Options
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
