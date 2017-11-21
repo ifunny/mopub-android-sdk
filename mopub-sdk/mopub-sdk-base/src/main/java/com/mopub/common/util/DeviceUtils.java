@@ -33,7 +33,7 @@ import static android.Manifest.permission.INTERNET;
 import static com.mopub.common.util.Reflection.MethodBuilder;
 
 public class DeviceUtils {
-    private static final int MAX_MEMORY_CACHE_SIZE = 12 * 1024 * 1024; // 12 MB
+    private static final int MAX_MEMORY_CACHE_SIZE = 6 * 1024 * 1024; // 12 MB
     private static final int MIN_DISK_CACHE_SIZE = 10 * 1024 * 1024; // 10 MB
     private static final int MAX_DISK_CACHE_SIZE = 40 * 1024 * 1024; // 40 MB
 
