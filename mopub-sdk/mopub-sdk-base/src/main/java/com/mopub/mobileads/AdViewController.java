@@ -409,7 +409,7 @@ public class AdViewController {
 		
 		mCurrentAutoRefreshStatus = newAutoRefreshStatus;
 		if (mAdWasLoaded && mCurrentAutoRefreshStatus) {
-			scheduleRefreshTimerIfEnabled();
+			scheduleRefreshTimerIfEnabled(false);
 		} else if (!mCurrentAutoRefreshStatus) {
 			cancelRefreshTimer();
 		}
