@@ -154,7 +154,7 @@ public class AdViewController {
 		loadCustomEvent(mMoPubView, adResponse.getCustomEventClassName(),
 				adResponse.getServerExtras());
 		
-		scheduleRefreshTimerIfEnabled();
+		scheduleRefreshTimerIfEnabled(false);
 	}
 	
 	@VisibleForTesting
@@ -247,7 +247,7 @@ public class AdViewController {
 		
 		if (!isNetworkAvailable()) {
 			MoPubLog.d("Can't load an ad because there is no network connectivity.");
-			scheduleRefreshTimerIfEnabled();
+			scheduleRefreshTimerIfEnabled(true);
 			return;
 		}
 		
@@ -523,13 +523,13 @@ public class AdViewController {
 			return;
 		}
 		
-		scheduleRefreshTimerIfEnabled();
+		scheduleRefreshTimerIfEnabled(false);
 		moPubView.adFailed(errorCode);
 	}
 	
-	void scheduleRefreshTimerIfEnabled() {
+	void scheduleRefreshTimerIfEnabled(boolean force) {
 		cancelRefreshTimer();
-		if (mCurrentAutoRefreshStatus && mRefreshTimeMillis != null && mRefreshTimeMillis > 0) {
+		if ((mCurrentAutoRefreshStatus && mRefreshTimeMillis != null && mRefreshTimeMillis > 0) || force) {
 			
 			mHandler.postDelayed(mRefreshRunnable,
 					Math.min(MAX_REFRESH_TIME_MILLISECONDS,
