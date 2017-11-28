@@ -1,7 +1,14 @@
 apply from: '../shared-build.gradle'
 
+repositories {
+    jcenter()
+
+    mavenCentral()
+    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+}
+
 dependencies {
-    compile project(':mopub-sdk:mopub-sdk-base')
+    api project(':mopub-sdk:mopub-sdk-base')
 }
 
 project.description = 'MoPub Android SDK - Banner'
