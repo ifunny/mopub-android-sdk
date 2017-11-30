@@ -530,10 +530,10 @@ public class AdViewController {
 	void scheduleRefreshTimerIfEnabled(boolean force) {
 		cancelRefreshTimer();
 		if ((mCurrentAutoRefreshStatus && mRefreshTimeMillis != null && mRefreshTimeMillis > 0) || force) {
-			
+			long refreshTime = force ? DEFAULT_REFRESH_TIME_MILLISECONDS : mRefreshTimeMillis;
 			mHandler.postDelayed(mRefreshRunnable,
 					Math.min(MAX_REFRESH_TIME_MILLISECONDS,
-							mRefreshTimeMillis * (long) Math.pow(BACKOFF_FACTOR, mBackoffPower)));
+							refreshTime * (long) Math.pow(BACKOFF_FACTOR, mBackoffPower)));
 		}
 	}
 	
