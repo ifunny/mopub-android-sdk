@@ -379,7 +379,7 @@ public class MoPubView extends FrameLayout {
     }
 
     protected void nativeAdLoaded() {
-        if (mAdViewController != null) mAdViewController.scheduleRefreshTimerIfEnabled(false);
+        if (mAdViewController != null) mAdViewController.scheduleRefreshTimerIfEnabled();
         adLoaded();
     }
 
