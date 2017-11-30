@@ -1,9 +1,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.mopub.mobileads.base">
-    <library
-        tools:node="removeAll"/>
     <application/>
 </manifest>
 
