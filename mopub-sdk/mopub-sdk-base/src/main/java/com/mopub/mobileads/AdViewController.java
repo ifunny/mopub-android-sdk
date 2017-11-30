@@ -567,7 +567,7 @@ public class AdViewController {
 		
 		// Otherwise, perform the connectivity check.
 		ConnectivityManager cm
-				= (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+				= (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
 	}

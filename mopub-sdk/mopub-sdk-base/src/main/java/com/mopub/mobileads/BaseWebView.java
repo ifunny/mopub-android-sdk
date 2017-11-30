@@ -119,7 +119,7 @@ public class BaseWebView extends WebView {
             params.format = PixelFormat.TRANSPARENT;
             params.gravity = Gravity.START | Gravity.TOP;
             final WindowManager windowManager =
-                    (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
 
             windowManager.addView(webView, params);
         }

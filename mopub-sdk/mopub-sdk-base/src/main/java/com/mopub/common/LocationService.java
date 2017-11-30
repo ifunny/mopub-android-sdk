@@ -154,7 +154,7 @@ public class LocationService {
         }
 
         final LocationManager locationManager =
-                (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                (LocationManager) context.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         try {
             // noinspection ResourceType
             return locationManager.getLastKnownLocation(provider.toString());
