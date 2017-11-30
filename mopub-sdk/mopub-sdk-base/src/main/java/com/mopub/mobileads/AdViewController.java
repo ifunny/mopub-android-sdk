@@ -46,7 +46,7 @@ import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 
 public class AdViewController {
 	static final int DEFAULT_REFRESH_TIME_MILLISECONDS = 60000;  // 1 minute
-	static final long DEFAULT_NET_REFRESH_TIME_MILLISECONDS = TimeUnit.SECONDS.toMillis(15);  // 1 minute
+	static final long DEFAULT_NET_REFRESH_TIME_MILLISECONDS = TimeUnit.SECONDS.toMillis(15);  // 15 seconds
 	static final int MAX_REFRESH_TIME_MILLISECONDS = 600000; // 10 minutes
 	static final int MARKER_OFFSET_COLOR = 0xFF454545;
 	static final double BACKOFF_FACTOR = 1.5;
