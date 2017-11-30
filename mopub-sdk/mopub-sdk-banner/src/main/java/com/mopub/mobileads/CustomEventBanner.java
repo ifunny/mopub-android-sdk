@@ -101,4 +101,13 @@ public abstract class CustomEventBanner {
          */
         void onLeaveApplication();
     }
+    
+    public interface AnalyticEventBannerListener extends CustomEventBannerListener {
+        void amazonBidRequest();
+        void amazonBidSuccess(int bidValue, long requestTime, boolean replacedCurrent, boolean hasCurrent);
+        void amazonBidFailure(long requestTime, boolean hasCurrent);
+        void amazonBidDrain(boolean atOnce, int reqValue, int actValue);
+        void amazonBidStale(long stale);
+        void amazonBidLow(int reqValue, int actValue);
+    }
 }

@@ -41,6 +41,15 @@ public class MoPubView extends FrameLayout {
 	    public void onBannerExpanded(MoPubView banner);
 	    public void onBannerCollapsed(MoPubView banner);
     }
+	
+	public interface AdAnalyticEventListener {
+		void amazonBidRequest();
+		void amazonBidSuccess(int bidValue, long requestTime, boolean replacedCurrent, boolean hasCurrent);
+		void amazonBidFailure(long requestTime, boolean hasCurrent);
+		void amazonBidDrain(boolean atOnce, int reqValue, int actValue);
+		void amazonBidStale(long stale);
+		void amazonBidLow(int reqValue, int actValue);
+	}
 
     private static final String CUSTOM_EVENT_BANNER_ADAPTER_FACTORY =
             "com.mopub.mobileads.factories.CustomEventBannerAdapterFactory";
@@ -59,6 +68,9 @@ public class MoPubView extends FrameLayout {
 	private boolean resumed;
 	private boolean destoyed;
 	private boolean pauseOnVisibilityChange;
+	
+	@Nullable
+	private AdAnalyticEventListener mAdAnalyticEventListener;
 	
 	public MoPubView(Context context) {
         this(context, null);
@@ -108,6 +120,15 @@ public class MoPubView extends FrameLayout {
             mAdViewController.loadAd();
         }
     }
+    
+    public void setAdAnalyticEventListener(AdAnalyticEventListener listener) {
+		mAdAnalyticEventListener = listener;
+    }
+    
+    @Nullable
+    public AdAnalyticEventListener getAdAnalyticEventListener() {
+		return mAdAnalyticEventListener;
+    }
 
     /*
      * Tears down the ad view: no ads will be shown once this method executes. The parent
@@ -131,6 +152,8 @@ public class MoPubView extends FrameLayout {
 	        destroyAdapter();
             mCustomEventBannerAdapter = null;
         }
+        
+        mAdAnalyticEventListener = null;
     }
     
     @Override

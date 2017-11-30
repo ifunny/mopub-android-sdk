@@ -26,7 +26,7 @@ import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
 import static com.mopub.mobileads.MoPubErrorCode.NETWORK_TIMEOUT;
 import static com.mopub.mobileads.MoPubErrorCode.UNSPECIFIED;
 
-public class CustomEventBannerAdapter implements CustomEventBannerListener {
+public class CustomEventBannerAdapter implements CustomEventBanner.AnalyticEventBannerListener {
 	public static final int DEFAULT_BANNER_TIMEOUT_DELAY = Constants.SIX_SECONDS_MILLIS;
 	private boolean mInvalidated;
 	private MoPubView mMoPubView;
@@ -248,5 +248,51 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 	@Override
 	public void onLeaveApplication() {
 		onBannerClicked();
+	}
+	
+	@Override
+	public void amazonBidRequest() {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidRequest();
+		}
+	}
+	
+	@Override
+	public void amazonBidSuccess(int bidValue, long requestTime, boolean replacedCurrent, boolean hasCurrent) {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidSuccess(bidValue, requestTime, replacedCurrent, hasCurrent);
+		}
+	}
+	
+	@Override
+	public void amazonBidFailure(long requestTime, boolean hasCurrent) {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidFailure(requestTime, hasCurrent);
+		}
+	}
+	
+	@Override
+	public void amazonBidDrain(boolean atOnce, int reqValue, int actValue) {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidDrain(atOnce, reqValue, actValue);
+		}
+	}
+	
+	@Override
+	public void amazonBidStale(long stale) {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidStale(stale);
+		}
+	}
+	
+	@Override
+	public void amazonBidLow(int reqValue, int actValue) {
+		if (checkAnalyticListener()) {
+			mMoPubView.getAdAnalyticEventListener().amazonBidLow(reqValue, actValue);
+		}
+	}
+	
+	private boolean checkAnalyticListener() {
+		return mMoPubView != null && mMoPubView.getAdAnalyticEventListener() != null;
 	}
 }
