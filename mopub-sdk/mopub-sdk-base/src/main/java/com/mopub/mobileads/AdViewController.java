@@ -40,11 +40,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.WeakHashMap;
+import java.util.concurrent.TimeUnit;
 
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 
 public class AdViewController {
 	static final int DEFAULT_REFRESH_TIME_MILLISECONDS = 60000;  // 1 minute
+	static final long DEFAULT_NET_REFRESH_TIME_MILLISECONDS = TimeUnit.SECONDS.toMillis(15);  // 1 minute
 	static final int MAX_REFRESH_TIME_MILLISECONDS = 600000; // 10 minutes
 	static final int MARKER_OFFSET_COLOR = 0xFF454545;
 	static final double BACKOFF_FACTOR = 1.5;
@@ -154,7 +156,7 @@ public class AdViewController {
 		loadCustomEvent(mMoPubView, adResponse.getCustomEventClassName(),
 				adResponse.getServerExtras());
 		
-		scheduleRefreshTimerIfEnabled(false);
+		scheduleRefreshTimerIfEnabled();
 	}
 	
 	@VisibleForTesting
@@ -247,7 +249,7 @@ public class AdViewController {
 		
 		if (!isNetworkAvailable()) {
 			MoPubLog.d("Can't load an ad because there is no network connectivity.");
-			scheduleRefreshTimerIfEnabled(true);
+			scheduleRefreshTimerIfNetUnavaible();
 			return;
 		}
 		
@@ -409,7 +411,7 @@ public class AdViewController {
 		
 		mCurrentAutoRefreshStatus = newAutoRefreshStatus;
 		if (mAdWasLoaded && mCurrentAutoRefreshStatus) {
-			scheduleRefreshTimerIfEnabled(false);
+			scheduleRefreshTimerIfEnabled();
 		} else if (!mCurrentAutoRefreshStatus) {
 			cancelRefreshTimer();
 		}
@@ -523,18 +525,22 @@ public class AdViewController {
 			return;
 		}
 		
-		scheduleRefreshTimerIfEnabled(false);
+		scheduleRefreshTimerIfEnabled();
 		moPubView.adFailed(errorCode);
 	}
 	
-	void scheduleRefreshTimerIfEnabled(boolean force) {
+	void scheduleRefreshTimerIfEnabled() {
 		cancelRefreshTimer();
-		if ((mCurrentAutoRefreshStatus && mRefreshTimeMillis != null && mRefreshTimeMillis > 0) || force) {
-			long refreshTime = force ? DEFAULT_REFRESH_TIME_MILLISECONDS : mRefreshTimeMillis;
+		if ((mCurrentAutoRefreshStatus && mRefreshTimeMillis != null && mRefreshTimeMillis > 0)) {
 			mHandler.postDelayed(mRefreshRunnable,
 					Math.min(MAX_REFRESH_TIME_MILLISECONDS,
-							refreshTime * (long) Math.pow(BACKOFF_FACTOR, mBackoffPower)));
+							mRefreshTimeMillis * (long) Math.pow(BACKOFF_FACTOR, mBackoffPower)));
 		}
+	}
+	
+	void scheduleRefreshTimerIfNetUnavaible() {
+		cancelRefreshTimer();
+		mHandler.postDelayed(mRefreshRunnable, DEFAULT_NET_REFRESH_TIME_MILLISECONDS);
 	}
 	
 	void setLocalExtras(Map<String, Object> localExtras) {
