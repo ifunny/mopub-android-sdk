@@ -43,12 +43,8 @@ public class MoPubView extends FrameLayout {
     }
 	
 	public interface AdAnalyticEventListener {
-		void amazonBidRequest();
-		void amazonBidSuccess(int bidValue, long requestTime, boolean replacedCurrent, boolean hasCurrent);
-		void amazonBidFailure(long requestTime, boolean hasCurrent);
-		void amazonBidDrain(boolean atOnce, int reqValue, int actValue);
-		void amazonBidStale(long stale);
-		void amazonBidLow(int reqValue, int actValue);
+		void logEvent(@NonNull String eventName, @Nullable Map<String, Number> numberValues,
+		              @Nullable Map<String, String> stringValues);
 	}
 
     private static final String CUSTOM_EVENT_BANNER_ADAPTER_FACTORY =

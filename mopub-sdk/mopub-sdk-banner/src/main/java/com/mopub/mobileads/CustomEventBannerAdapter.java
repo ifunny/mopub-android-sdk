@@ -251,44 +251,10 @@ public class CustomEventBannerAdapter implements CustomEventBanner.AnalyticEvent
 	}
 	
 	@Override
-	public void amazonBidRequest() {
+	public void logEvent(@NonNull String eventName, @Nullable Map<String, Number> numberValues,
+	                     @Nullable Map<String, String> stringValues) {
 		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidRequest();
-		}
-	}
-	
-	@Override
-	public void amazonBidSuccess(int bidValue, long requestTime, boolean replacedCurrent, boolean hasCurrent) {
-		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidSuccess(bidValue, requestTime, replacedCurrent, hasCurrent);
-		}
-	}
-	
-	@Override
-	public void amazonBidFailure(long requestTime, boolean hasCurrent) {
-		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidFailure(requestTime, hasCurrent);
-		}
-	}
-	
-	@Override
-	public void amazonBidDrain(boolean atOnce, int reqValue, int actValue) {
-		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidDrain(atOnce, reqValue, actValue);
-		}
-	}
-	
-	@Override
-	public void amazonBidStale(long stale) {
-		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidStale(stale);
-		}
-	}
-	
-	@Override
-	public void amazonBidLow(int reqValue, int actValue) {
-		if (checkAnalyticListener()) {
-			mMoPubView.getAdAnalyticEventListener().amazonBidLow(reqValue, actValue);
+			mMoPubView.getAdAnalyticEventListener().logEvent(eventName, numberValues, stringValues);
 		}
 	}
 	
