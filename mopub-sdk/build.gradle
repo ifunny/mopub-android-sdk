@@ -1,12 +1,19 @@
 apply from: 'shared-build.gradle'
 
+repositories {
+	jcenter()
+
+	mavenCentral()
+	maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+}
+
 dependencies {
-	compile project(':mopub-sdk:mopub-sdk-base')
-	compile project(':mopub-sdk:mopub-sdk-banner')
-	compile project(':mopub-sdk:mopub-sdk-interstitial')
-	compile project(':mopub-sdk:mopub-sdk-rewardedvideo')
-	compile project(':mopub-sdk:mopub-sdk-native-static')
-	compile project(':mopub-sdk:mopub-sdk-native-video')
+	implementation project(':mopub-sdk:mopub-sdk-base')
+	implementation project(':mopub-sdk:mopub-sdk-banner')
+	implementation project(':mopub-sdk:mopub-sdk-interstitial')
+	implementation project(':mopub-sdk:mopub-sdk-rewardedvideo')
+	implementation project(':mopub-sdk:mopub-sdk-native-static')
+	implementation project(':mopub-sdk:mopub-sdk-native-video')
 
 	testCompile 'junit:junit:4.10'
 	testCompile 'org.robolectric:robolectric:3.0'
