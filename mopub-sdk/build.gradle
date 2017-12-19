@@ -2,9 +2,6 @@ apply from: 'shared-build.gradle'
 
 repositories {
 	jcenter()
-
-	mavenCentral()
-	maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
 }
 
 dependencies {
@@ -14,6 +11,7 @@ dependencies {
 	implementation project(':mopub-sdk:mopub-sdk-rewardedvideo')
 	implementation project(':mopub-sdk:mopub-sdk-native-static')
 	implementation project(':mopub-sdk:mopub-sdk-native-video')
+	implementation project(':moat-mobile-app-kit')
 
 	testCompile 'junit:junit:4.10'
 	testCompile 'org.robolectric:robolectric:3.0'
