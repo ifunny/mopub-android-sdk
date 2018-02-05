@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.nativeads;
 
 import android.content.Context;
@@ -98,7 +99,7 @@ public class MoPubNative {
 
 		setBannedAdapters(bannedAdapters);
 
-		mContext = new WeakReference<Context>(context);
+		mContext = new WeakReference<Context>(context.getApplicationContext());
 		mAdUnitId = adUnitId;
 		mMoPubNativeNetworkListener = moPubNativeNetworkListener;
 		mAdRendererRegistry = adRendererRegistry;
