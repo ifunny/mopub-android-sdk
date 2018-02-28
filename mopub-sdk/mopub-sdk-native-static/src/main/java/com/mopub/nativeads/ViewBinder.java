@@ -1,5 +1,6 @@
 package com.mopub.nativeads;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 
 import java.util.Collections;
@@ -10,10 +11,13 @@ public class ViewBinder {
     public final static class Builder {
         private final int layoutId;
         private int titleId;
+        private String defaultTitle;
         private int textId;
+        private String defaultText;
         private int callToActionId;
         private int mainImageId;
         private int iconImageId;
+        @DrawableRes private int defaultIconImageDrawableId;
         private int privacyInformationIconImageId;
         @NonNull private Map<String, Integer> extras = Collections.emptyMap();
 
@@ -29,8 +33,20 @@ public class ViewBinder {
         }
 
         @NonNull
+        public final Builder defaultTitle(final String defaultTitle) {
+            this.defaultTitle = defaultTitle;
+            return this;
+        }
+
+        @NonNull
         public final Builder textId(final int textId) {
             this.textId = textId;
+            return this;
+        }
+
+        @NonNull
+        public final Builder defaultText(final String defaultText) {
+            this.defaultText = defaultText;
             return this;
         }
 
@@ -49,6 +65,11 @@ public class ViewBinder {
         @NonNull
         public final Builder iconImageId(final int iconImageId) {
             this.iconImageId = iconImageId;
+            return this;
+        }
+        @NonNull
+        public final Builder defaultIconDrawableId(@DrawableRes final int iconDrawableResourceId) {
+            defaultIconImageDrawableId = iconDrawableResourceId;
             return this;
         }
 
@@ -78,20 +99,26 @@ public class ViewBinder {
 
     final int layoutId;
     final int titleId;
+    final String defaultTitle;
     final int textId;
+    final String defaultText;
     final int callToActionId;
     final int mainImageId;
     final int iconImageId;
+    @DrawableRes final int defaultIconImageDrawableId;
     final int privacyInformationIconImageId;
     @NonNull final Map<String, Integer> extras;
 
     private ViewBinder(@NonNull final Builder builder) {
         this.layoutId = builder.layoutId;
         this.titleId = builder.titleId;
+        this.defaultTitle = builder.defaultTitle;
         this.textId = builder.textId;
+        this.defaultText = builder.defaultText;
         this.callToActionId = builder.callToActionId;
         this.mainImageId = builder.mainImageId;
         this.iconImageId = builder.iconImageId;
+        this.defaultIconImageDrawableId = builder.defaultIconImageDrawableId;
         this.privacyInformationIconImageId = builder.privacyInformationIconImageId;
         this.extras = builder.extras;
     }
@@ -103,9 +130,17 @@ public class ViewBinder {
     public int getTitleId() {
         return titleId;
     }
+    
+    public String getDefaultTitle() {
+        return defaultTitle;
+    }
 
     public int getTextId() {
         return textId;
+    }
+    
+    public String getDefaultText() {
+        return defaultText;
     }
 
     public int getCallToActionId() {
@@ -118,6 +153,11 @@ public class ViewBinder {
 
     public int getIconImageId() {
         return iconImageId;
+    }
+
+    @DrawableRes
+    public int getDefaultIconImageDrawableId() {
+        return defaultIconImageDrawableId;
     }
 
     public int getPrivacyInformationIconImageId() {
