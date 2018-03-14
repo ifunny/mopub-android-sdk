@@ -1,5 +1,9 @@
 apply from: 'shared-build.gradle'
 
+repositories {
+    jcenter()
+}
+
 dependencies {
     api project(':mopub-sdk:mopub-sdk-base')
     api project(':mopub-sdk:mopub-sdk-banner')
@@ -7,6 +11,7 @@ dependencies {
     api project(':mopub-sdk:mopub-sdk-rewardedvideo')
     api project(':mopub-sdk:mopub-sdk-native-static')
     api project(':mopub-sdk:mopub-sdk-native-video')
+    api project(':moat-mobile-app-kit')
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.5.1'
