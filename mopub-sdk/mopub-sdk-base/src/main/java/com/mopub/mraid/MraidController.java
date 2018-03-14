@@ -1113,6 +1113,11 @@ public class MraidController {
         return mContext;
     }
 
+    @NonNull
+    WeakReference<Activity> getWeakActivity() {
+        return mWeakActivity;
+    }
+
     @VisibleForTesting
     void handleSetOrientationProperties(final boolean allowOrientationChange,
             final MraidOrientation forceOrientation) throws MraidCommandException {

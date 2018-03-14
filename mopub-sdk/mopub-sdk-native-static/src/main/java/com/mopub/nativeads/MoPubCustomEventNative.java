@@ -71,6 +71,36 @@ public class MoPubCustomEventNative extends CustomEventNative {
             }
         }
 
+        if (serverExtras.containsKey(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)) {
+            try {
+                moPubStaticNativeAd.setImpressionMinPercentageViewed(Integer.parseInt(
+                        serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)));
+            } catch (final NumberFormatException e) {
+                MoPubLog.d("Unable to format min visible percent: " +
+                        serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT));
+            }
+        }
+
+        if (serverExtras.containsKey(DataKeys.IMPRESSION_VISIBLE_MS)) {
+            try {
+                moPubStaticNativeAd.setImpressionMinTimeViewed(
+                        Integer.parseInt(serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS)));
+            } catch (final NumberFormatException e) {
+                MoPubLog.d("Unable to format min time: " +
+                        serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS));
+            }
+        }
+
+        if (serverExtras.containsKey(DataKeys.IMPRESSION_MIN_VISIBLE_PX)) {
+            try {
+                moPubStaticNativeAd.setImpressionMinVisiblePx(Integer.parseInt(
+                        serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX)));
+            } catch (final NumberFormatException e) {
+                MoPubLog.d("Unable to format min visible px: " +
+                        serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX));
+            }
+        }
+
         try {
             moPubStaticNativeAd.loadAd();
         } catch (IllegalArgumentException e) {

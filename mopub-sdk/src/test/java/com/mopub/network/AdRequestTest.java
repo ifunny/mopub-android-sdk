@@ -6,6 +6,7 @@ import android.location.Location;
 import com.mopub.common.AdFormat;
 import com.mopub.common.AdType;
 import com.mopub.common.DataKeys;
+import com.mopub.common.MoPub;
 import com.mopub.common.MoPub.BrowserAgent;
 import com.mopub.common.event.BaseEvent;
 import com.mopub.common.event.EventDispatcher;
@@ -71,6 +72,7 @@ public class AdRequestTest {
         defaultHeaders.put(ResponseHeader.PAUSE_VISIBLE_PERCENT.getKey(), "25");
         defaultHeaders.put(ResponseHeader.IMPRESSION_MIN_VISIBLE_PERCENT.getKey(), "33%");
         defaultHeaders.put(ResponseHeader.IMPRESSION_VISIBLE_MS.getKey(), "2000");
+        defaultHeaders.put(ResponseHeader.IMPRESSION_MIN_VISIBLE_PX.getKey(), "1");
         defaultHeaders.put(ResponseHeader.MAX_BUFFER_MS.getKey(), "1000");
 
         MoPubEvents.setEventDispatcher(mockEventDispatcher);
@@ -81,6 +83,7 @@ public class AdRequestTest {
         // Reset our locale for other tests.
         Locale.setDefault(Locale.US);
         MoPubEvents.setEventDispatcher(null);
+        MoPub.resetBrowserAgent();
     }
 
     @Test
@@ -169,6 +172,7 @@ public class AdRequestTest {
         assertThat(serverExtras.get(DataKeys.PAUSE_VISIBLE_PERCENT)).isEqualTo("25");
         assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)).isEqualTo("33");
         assertThat(serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS)).isEqualTo("2000");
+        assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX)).isEqualTo("1");
         assertThat(serverExtras.get(DataKeys.MAX_BUFFER_MS)).isEqualTo("1000");
     }
 
@@ -186,6 +190,7 @@ public class AdRequestTest {
         assertThat(serverExtras).isNotEmpty();
         assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)).isEqualTo("33");
         assertThat(serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS)).isEqualTo("2000");
+        assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX)).isEqualTo("1");
     }
 
     @Test
@@ -208,6 +213,7 @@ public class AdRequestTest {
         assertThat(serverExtras.get(DataKeys.PAUSE_VISIBLE_PERCENT)).isEqualTo("25");
         assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)).isEqualTo("33");
         assertThat(serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS)).isEqualTo("2000");
+        assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX)).isEqualTo("1");
         assertThat(serverExtras.get(DataKeys.MAX_BUFFER_MS)).isEqualTo("1000");
 
         assertThat(serverExtras.get("customEventKey1")).isEqualTo("value1");
@@ -219,6 +225,7 @@ public class AdRequestTest {
         defaultHeaders.put(ResponseHeader.AD_TYPE.getKey(), AdType.VIDEO_NATIVE);
         defaultHeaders.put(ResponseHeader.PLAY_VISIBLE_PERCENT.getKey(), "-1");
         defaultHeaders.put(ResponseHeader.PAUSE_VISIBLE_PERCENT.getKey(), "101%");
+        defaultHeaders.put(ResponseHeader.IMPRESSION_MIN_VISIBLE_PX.getKey(), "bob");
         defaultHeaders.put(ResponseHeader.IMPRESSION_MIN_VISIBLE_PERCENT.getKey(), "XX%");
         NetworkResponse testResponse = new NetworkResponse(200,
                 "{\"abc\": \"def\"}".getBytes(Charset.defaultCharset()), defaultHeaders, false);
@@ -233,6 +240,7 @@ public class AdRequestTest {
         assertThat(serverExtras.get(DataKeys.PAUSE_VISIBLE_PERCENT)).isNull();
         assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)).isNull();
         assertThat(serverExtras.get(DataKeys.IMPRESSION_VISIBLE_MS)).isEqualTo("2000");
+        assertThat(serverExtras.get(DataKeys.IMPRESSION_MIN_VISIBLE_PX)).isEqualTo("bob");
         assertThat(serverExtras.get(DataKeys.MAX_BUFFER_MS)).isEqualTo("1000");
     }
 
@@ -413,6 +421,73 @@ public class AdRequestTest {
 
         final Response<AdResponse> response = subject.parseNetworkResponse(testResponse);
         assertThat(response.result.getBrowserAgent()).isEqualTo(BrowserAgent.IN_APP);
+    }
+
+    @Test
+    public void parseNetworkResponse_forBannerAdFormat_withoutImpTrackingHeaders_shouldSucceed() {
+        subject = new AdRequest("testUrl", AdFormat.BANNER, "testAdUnitId", activity, mockListener);
+
+        NetworkResponse testResponse =
+                new NetworkResponse(200, "abc".getBytes(Charset.defaultCharset()), defaultHeaders, false);
+
+        final Response<AdResponse> response = subject.parseNetworkResponse(testResponse);
+
+        assertThat(response.result).isNotNull();
+        assertThat(response.result.getStringBody()).isEqualTo("abc");
+
+        // Check the server extras
+        final Map<String, String> serverExtras = response.result.getServerExtras();
+        assertThat(serverExtras).isNotNull();
+        assertThat(serverExtras).isNotEmpty();
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_DIPS)).isNull();
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_MS)).isNull();
+    }
+
+    @Test
+    public void parseNetworkResponse_forBannerAdFormat_withImpTrackingHeaders_shouldSucceed_shouldStoreHeadersInServerExtras() {
+        defaultHeaders.put(ResponseHeader.BANNER_IMPRESSION_MIN_VISIBLE_DIPS.getKey(), "1");
+        defaultHeaders.put(ResponseHeader.BANNER_IMPRESSION_MIN_VISIBLE_MS.getKey(), "0");
+
+        subject = new AdRequest("testUrl", AdFormat.BANNER, "testAdUnitId", activity, mockListener);
+
+        NetworkResponse testResponse =
+                new NetworkResponse(200, "abc".getBytes(Charset.defaultCharset()), defaultHeaders, false);
+
+        final Response<AdResponse> response = subject.parseNetworkResponse(testResponse);
+
+        assertThat(response.result).isNotNull();
+        assertThat(response.result.getStringBody()).isEqualTo("abc");
+
+        // Check the server extras
+        final Map<String, String> serverExtras = response.result.getServerExtras();
+        assertThat(serverExtras).isNotNull();
+        assertThat(serverExtras).isNotEmpty();
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_DIPS)).isEqualTo("1");
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_MS)).isEqualTo("0");
+    }
+
+    @Test
+    public void parseNetworkResponse_forNonBannerAdFormat_withImpTrackingHeaders_shouldSucceed_shouldIgnoreHeaders() {
+        defaultHeaders.put(ResponseHeader.BANNER_IMPRESSION_MIN_VISIBLE_DIPS.getKey(), "1");
+        defaultHeaders.put(ResponseHeader.BANNER_IMPRESSION_MIN_VISIBLE_MS.getKey(), "0");
+
+        // Non-banner AdFormat
+        subject = new AdRequest("testUrl", AdFormat.INTERSTITIAL, "testAdUnitId", activity, mockListener);
+
+        NetworkResponse testResponse =
+                new NetworkResponse(200, "abc".getBytes(Charset.defaultCharset()), defaultHeaders, false);
+
+        final Response<AdResponse> response = subject.parseNetworkResponse(testResponse);
+
+        assertThat(response.result).isNotNull();
+        assertThat(response.result.getStringBody()).isEqualTo("abc");
+
+        // Check the server extras
+        final Map<String, String> serverExtras = response.result.getServerExtras();
+        assertThat(serverExtras).isNotNull();
+        assertThat(serverExtras).isNotEmpty();
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_DIPS)).isNull();
+        assertThat(serverExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_MS)).isNull();
     }
 
     @Test

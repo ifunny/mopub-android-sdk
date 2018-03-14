@@ -4,11 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.mopub.common.AdReport;
 import com.mopub.common.Constants;
+import com.mopub.common.DataKeys;
 import com.mopub.common.Preconditions;
+import com.mopub.common.VisibleForTesting;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.ReflectionTarget;
 import com.mopub.mobileads.CustomEventBanner.CustomEventBannerListener;
@@ -21,6 +24,7 @@ import java.util.TreeMap;
 import static com.mopub.common.DataKeys.AD_HEIGHT;
 import static com.mopub.common.DataKeys.AD_REPORT_KEY;
 import static com.mopub.common.DataKeys.AD_WIDTH;
+import static com.mopub.common.DataKeys.BANNER_IMPRESSION_PIXEL_COUNT_ENABLED;
 import static com.mopub.common.DataKeys.BROADCAST_IDENTIFIER_KEY;
 import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
 import static com.mopub.mobileads.MoPubErrorCode.NETWORK_TIMEOUT;
@@ -38,6 +42,11 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 	private final Handler mHandler;
 	private final Runnable mTimeout;
 	private boolean mStoredAutorefresh;
+	
+	private int mImpressionMinVisibleDips = Integer.MIN_VALUE;
+	private int mImpressionMinVisibleMs = Integer.MIN_VALUE;
+	private boolean mIsVisibilityImpressionTrackingEnabled = false;
+	@Nullable private BannerVisibilityTracker mVisibilityTracker;
 	
 	public CustomEventBannerAdapter(@NonNull MoPubView moPubView, Context context,
 	                                @NonNull String className,
@@ -67,6 +76,9 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		// Attempt to load the JSON extras into mServerExtras.
 		mServerExtras = new TreeMap<String, String>(serverExtras);
 		
+		// Parse banner impression tracking headers to determine if we are in visibility experiment
+		parseBannerImpressionTrackingHeaders();
+		
 		mLocalExtras = mMoPubView.getLocalExtras();
 		if (mMoPubView.getLocation() != null) {
 			mLocalExtras.put("location", mMoPubView.getLocation());
@@ -75,6 +87,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		mLocalExtras.put(AD_REPORT_KEY, adReport);
 		mLocalExtras.put(AD_WIDTH, mMoPubView.getAdWidth());
 		mLocalExtras.put(AD_HEIGHT, mMoPubView.getAdHeight());
+		mLocalExtras.put(BANNER_IMPRESSION_PIXEL_COUNT_ENABLED, mIsVisibilityImpressionTrackingEnabled);
 	}
 	
 	@ReflectionTarget
@@ -106,11 +119,43 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 				MoPubLog.d("Invalidating a custom event banner threw an exception", e);
 			}
 		}
+		if (mVisibilityTracker != null) {
+			try {
+				mVisibilityTracker.destroy();
+			} catch (Exception e) {
+				MoPubLog.d("Destroying a banner visibility tracker threw an exception", e);
+			}
+		}
 		mContext = null;
 		mCustomEventBanner = null;
 		mLocalExtras = null;
 		mServerExtras = null;
 		mInvalidated = true;
+	}
+	
+	@Deprecated
+	@VisibleForTesting
+	int getImpressionMinVisibleDips() {
+		return mImpressionMinVisibleDips;
+	}
+	
+	@Deprecated
+	@VisibleForTesting
+	int getImpressionMinVisibleMs() {
+		return mImpressionMinVisibleMs;
+	}
+	
+	@Deprecated
+	@VisibleForTesting
+	boolean isVisibilityImpressionTrackingEnabled() {
+		return mIsVisibilityImpressionTrackingEnabled;
+	}
+	
+	@Nullable
+	@Deprecated
+	@VisibleForTesting
+	BannerVisibilityTracker getVisibilityTracker() {
+		return mVisibilityTracker;
 	}
 	
 	@ReflectionTarget
@@ -170,6 +215,33 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		return DEFAULT_BANNER_TIMEOUT_DELAY;
 	}
 	
+	private void parseBannerImpressionTrackingHeaders() {
+		final String impressionMinVisibleDipsString =
+				mServerExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_DIPS);
+		final String impressionMinVisibleMsString =
+				mServerExtras.get(DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_MS);
+		
+		if (!TextUtils.isEmpty(impressionMinVisibleDipsString)
+				&& !TextUtils.isEmpty(impressionMinVisibleMsString)) {
+			try {
+				mImpressionMinVisibleDips = Integer.parseInt(impressionMinVisibleDipsString);
+			} catch (NumberFormatException e) {
+				MoPubLog.d("Cannot parse integer from header "
+						+ DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_DIPS);
+			}
+			
+			try {
+				mImpressionMinVisibleMs = Integer.parseInt(impressionMinVisibleMsString);
+			} catch (NumberFormatException e) {
+				MoPubLog.d("Cannot parse integer from header "
+						+ DataKeys.BANNER_IMPRESSION_MIN_VISIBLE_MS);
+			}
+			
+			if (mImpressionMinVisibleDips > 0 && mImpressionMinVisibleMs >= 0) {
+				mIsVisibilityImpressionTrackingEnabled = true;
+			}
+		}
+	}
 	
 	/*
 	 * CustomEventBanner.Listener implementation
@@ -183,11 +255,37 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		cancelTimeout();
 		
 		if (mMoPubView != null) {
-			mMoPubView.setAdContentView(bannerView);
-			mMoPubView.setAdCreativeId(adCreativeIdBundle);
 			mMoPubView.nativeAdLoaded();
-			if (!(bannerView instanceof HtmlBannerWebView)) {
-				mMoPubView.trackNativeImpression();
+			
+			// If visibility impression tracking is enabled for banners, fire all impression
+			// tracking URLs (AdServer, MPX, 3rd-party) for both HTML and MRAID banner types when
+			// visibility conditions are met.
+			//
+			// Else, retain old behavior of firing AdServer impression tracking URL if and only if
+			// banner is not HTML.
+			if (mIsVisibilityImpressionTrackingEnabled) {
+				// Set up visibility tracker and listener if in experiment
+				mVisibilityTracker = new BannerVisibilityTracker(mContext, mMoPubView, bannerView,
+						mImpressionMinVisibleDips, mImpressionMinVisibleMs);
+				mVisibilityTracker.setBannerVisibilityTrackerListener(
+						new BannerVisibilityTracker.BannerVisibilityTrackerListener() {
+							@Override
+							public void onVisibilityChanged() {
+								mMoPubView.trackNativeImpression();
+								if (mCustomEventBanner != null) {
+									mCustomEventBanner.trackMpxAndThirdPartyImpressions();
+								}
+							}
+						});
+			}
+			
+			mMoPubView.setAdContentView(bannerView);
+			
+			// Old behavior
+			if (!mIsVisibilityImpressionTrackingEnabled) {
+				if (!(bannerView instanceof HtmlBannerWebView)) {
+					mMoPubView.trackNativeImpression();
+				}
 			}
 		}
 	}

@@ -62,7 +62,13 @@ public abstract class CustomEventBanner {
     public boolean isInvalidated() {
         return isInvalidated;
     }
-    
+
+    /*
+     * Fire MPX impression trackers and 3rd-party impression trackers from JS.
+     */
+    protected void trackMpxAndThirdPartyImpressions() {
+    }
+
     public interface CustomEventBannerListener {
         /*
          * Your custom event subclass must call this method when it successfully loads an ad and

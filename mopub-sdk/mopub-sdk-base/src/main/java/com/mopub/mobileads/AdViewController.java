@@ -256,21 +256,21 @@ public class AdViewController {
 		loadNonJavascript(adUrl);
 	}
 
-	void loadNonJavascript(String url) {
-		if (url == null) {
-			return;
-		}
+    void loadNonJavascript(@Nullable final String url) {
+        if (url == null) {
+            return;
+        }
 
-		if (!url.startsWith("javascript:")) {
-			MoPubLog.d("Loading url: " + url);
-		}
+        if (!url.startsWith("javascript:")) {
+            MoPubLog.d("Loading url: " + url);
+        }
 
-		if (mIsLoading) {
-			if (!TextUtils.isEmpty(mAdUnitId)) {  // This shouldn't be able to happen?
-				MoPubLog.i("Already loading an ad for " + mAdUnitId + ", wait to finish.");
-			}
-			return;
-		}
+        if (mIsLoading) {
+            if (!TextUtils.isEmpty(mAdUnitId)) {  // This shouldn't be able to happen?
+                MoPubLog.i("Already loading an ad for " + mAdUnitId + ", wait to finish.");
+            }
+            return;
+        }
 
 		mUrl = url;
 		mIsLoading = true;

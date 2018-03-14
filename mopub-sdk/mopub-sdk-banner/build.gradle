@@ -1,12 +1,7 @@
 apply from: '../shared-build.gradle'
 
-repositories {
-	jcenter()
-
-}
-
 dependencies {
-	api project(':mopub-sdk:mopub-sdk-base')
+    api project(':mopub-sdk:mopub-sdk-base')
 }
 
 project.description = 'MoPub Android SDK - Banner'
