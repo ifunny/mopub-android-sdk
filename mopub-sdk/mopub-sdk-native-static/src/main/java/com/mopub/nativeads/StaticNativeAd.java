@@ -15,6 +15,7 @@ import java.util.Map;
  */
 public abstract class StaticNativeAd extends BaseNativeAd implements ImpressionInterface, ClickInterface {
     private static final int DEFAULT_IMPRESSION_MIN_TIME_VIEWED_MS = 1;
+    private static final int DEFAULT_IMPRESSION_MIN_VISIBLE_PX = 1;
     private static final int DEFAULT_IMPRESSION_MIN_PERCENTAGE_VIEWED = 1;
 
     static final double MIN_STAR_RATING = 0;
@@ -283,7 +284,7 @@ public abstract class StaticNativeAd extends BaseNativeAd implements ImpressionI
      */
     @Override
     final public Integer getImpressionMinVisiblePx() {
-        return mImpressionMinVisiblePx;
+        return DEFAULT_IMPRESSION_MIN_VISIBLE_PX;
     }
 
     @Override
