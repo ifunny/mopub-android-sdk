@@ -23,7 +23,7 @@ android {
         versionName version
         minSdkVersion 16
         targetSdkVersion 26
-        consumerProguardFiles project(':mopub-sdk').file('proguard.txt')
+        consumerProguardFiles '../proguard.txt'
     }
 
 	sourceSets {
