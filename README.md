@@ -39,7 +39,7 @@ The MoPub SDK is available via:
     }
 
     dependencies {
-        compile('com.mopub:mopub-sdk:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk:4.20.0@aar') {
             transitive = true
         }
     }
@@ -61,27 +61,27 @@ The MoPub SDK is available via:
         // ... other project dependencies
 
         // For banners
-        compile('com.mopub:mopub-sdk-banner:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk-banner:4.20.0@aar') {
             transitive = true
         }
         
         // For interstitials
-        compile('com.mopub:mopub-sdk-interstitial:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk-interstitial:4.20.0@aar') {
             transitive = true
         }
 
         // For rewarded videos. This will automatically also include interstitials
-        compile('com.mopub:mopub-sdk-rewardedvideo:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk-rewardedvideo:4.20.0@aar') {
             transitive = true
         }
 
         // For native static (images).
-        compile('com.mopub:mopub-sdk-native-static:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk-native-static:4.20.0@aar') {
             transitive = true
         }
 
         // For native video. This will automatically also include native static
-        compile('com.mopub:mopub-sdk-native-video:4.18.0@aar') {
+        implementation('com.mopub:mopub-sdk-native-video:4.20.0@aar') {
             transitive = true
         }
     }
@@ -109,24 +109,20 @@ The MoPub SDK is available via:
 ## New in this Version
 Please view the [changelog](https://github.com/mopub/mopub-android-sdk/blob/master/CHANGELOG.md) for a complete list of additions, fixes, and enhancements in the latest release.
 
-- Updated the SDK compile version to 26. Android API 26 artifacts live in the new Google maven repository `maven { url 'https://maven.google.com' }`. See [this article](https://developer.android.com/about/versions/oreo/android-8.0-migration.html) for more information about using Android API 26.
-- Fixed MoPub in-app browser's back and forward button icons.
-- Updated AdMob adapters to 11.4.0.
-- Updated Chartboost adapters to 7.0.1.
-- Updated Facebook Audience Network adapters to 4.26.0.
-- Updated Millennial to 6.6.1.
-- Updated TapJoy adapters to 11.11.0.
-- Updated Unity Ads adapters to 2.1.1.
-- Updated Vungle adapters to 5.3.0.
+- Upgraded Gradle dependency to 4.3.1.
+- Upgraded Moat dependency to 2.4.1. This fixes the AAPT2 manifest merge error.
+- Fixed a viewability bug for video ads where ViewGroups were not being properly added to the list of known obstructions.
+- We are formally separating network adapters from our MoPub SDK. This is to enable an independent release cadence resulting in faster updates and certification cycles. New mediation location is accessible [here](https://github.com/mopub/mopub-android-mediation).  
+We have also added an additional tool, making it easy for publishers to get up and running with the mediation integration. Check out https://developers.mopub.com/docs/mediation/integrate/ and integration instructions at https://developers.mopub.com/docs/android/integrating-networks/.
 
 ## Requirements
 
 - Android 4.1 (API Version 16) and up (**Updated in 4.12.0**)
-- android-support-v4.jar, r23 (**Updated in 4.4.0**)
-- android-support-annotations.jar, r23 (**Updated in 4.4.0**)
-- android-support-v7-recyclerview.jar, r23 (**Updated in 4.4.0**)
+- android-support-v4.jar, r26 (**Updated in 4.18.0**)
+- android-support-annotations.jar, r26 (**Updated in 4.18.0**)
+- android-support-v7-recyclerview.jar, r26 (**Updated in 4.18.0**)
 - MoPub Volley Library (mopub-volley-1.1.0.jar - available on JCenter) (**Updated in 3.6.0**)
-- **Recommended** Google Play Services 9.4.0
+- **Recommended** Google Play Services 11.4.0
 
 ## <a name="upgradeRepositoryViewability"></a>Upgrading from 4.15.0 and Prior
 In 4.16.0, dependencies were added to viewability libraries provided by AVID and Moat. Apps upgrading from previous versions must add
@@ -140,7 +136,7 @@ Normally, to add the MoPub SDK to your app via JCenter, your `build.gradle` woul
 
 ```	
 dependencies {
-    compile('com.mopub:mopub-sdk:4.18.0@aar') {
+    implementation('com.mopub:mopub-sdk:4.20.0@aar') {
         transitive = true
     }
 }
@@ -149,7 +145,7 @@ Update to the following to exclude one or both viewability vendors:
 
 ```
 dependencies {
-    compile('com.mopub:mopub-sdk:4.18.0@aar') {
+    implementation('com.mopub:mopub-sdk:4.20.0@aar') {
         transitive = true
         exclude module: 'libAvid-mopub' // To exclude AVID
         exclude module: 'moat-mobile-app-kit' // To exclude Moat

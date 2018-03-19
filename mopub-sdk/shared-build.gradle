@@ -1,16 +1,16 @@
 apply plugin: 'com.android.library'
 
 repositories {
-	mavenCentral()
-	jcenter()
-	flatDir {
-		dirs project(':mopub-sdk').file('../libs')
-	}
-	maven { url 'https://maven.google.com' }
+    mavenCentral()
+    jcenter()
+    flatDir {
+        dirs project(':mopub-sdk').file('../libs')
+    }
+    maven { url 'https://maven.google.com' }
 }
 
 project.group = 'com.mopub'
-project.version = '4.18.0'
+project.version = '4.20.0'
 
 android {
 	compileSdkVersion 26
@@ -18,13 +18,13 @@ android {
 	lintOptions { abortOnError false }
 	useLibrary 'org.apache.http.legacy'
 
-	defaultConfig {
-		versionCode 56
-		versionName version
-		minSdkVersion 16
-		targetSdkVersion 26
-		consumerProguardFiles '../proguard.txt'
-	}
+    defaultConfig {
+        versionCode 58
+        versionName version
+        minSdkVersion 16
+        targetSdkVersion 26
+        consumerProguardFiles '../proguard.txt'
+    }
 
 	sourceSets {
 		main {
@@ -48,13 +48,13 @@ android {
 			// connected tests instead.
 			returnDefaultValues = true
 
-			// Test JVM settings since we have a lot of classes loaded.
-			all {
-				jvmArgs '-XX:MaxPermSize=4096m', '-Xmx8192m', '-noverify'
-				forkEvery 200
-			}
-		}
-	}
+            // Test JVM settings since we have a lot of classes loaded.
+            all {
+                jvmArgs '-XX:MaxPermSize=4096m', '-Xmx8192m', '-noverify'
+                forkEvery 200
+            }
+        }
+    }
 
 	buildTypes {
 		release {
@@ -75,6 +75,6 @@ android {
 }
 
 dependencies {
-	implementation 'com.android.support:support-v4:26.1.0'
-	implementation 'com.android.support:support-annotations:26.1.0'
+    api 'com.android.support:support-v4:26.1.0'
+    api 'com.android.support:support-annotations:26.1.0'
 }

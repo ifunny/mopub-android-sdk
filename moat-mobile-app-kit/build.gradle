@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('moat-mobile-app-kit-2.1.0.aar'))
+artifacts.add("default", file('moat-mobile-app-kit-2.4.1.aar'))

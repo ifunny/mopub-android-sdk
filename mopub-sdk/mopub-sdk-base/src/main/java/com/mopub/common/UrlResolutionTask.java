@@ -72,11 +72,13 @@ public class UrlResolutionTask extends AsyncTask<String, Void, String> {
 				redirectCount++;
 			}
 
-		} catch (IOException e) {
-			return null;
-		} catch (URISyntaxException e) {
-			return null;
-		}
+        } catch (IOException e) {
+            return null;
+        } catch (URISyntaxException e) {
+            return null;
+        } catch (NullPointerException e) {
+            return null;
+        }
 
 		return previousUrl;
 	}

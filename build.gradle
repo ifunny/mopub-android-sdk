@@ -1,14 +1,14 @@
 buildscript {
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+    }
 
-	dependencies {
-		classpath 'com.android.tools.build:gradle:3.0.1'
-		classpath 'com.novoda:bintray-release:0.4.0'
-	}
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.novoda:bintray-release:0.7.0'
+    }
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.2.1'
+    gradleVersion = '4.3.1'
 }

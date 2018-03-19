@@ -1,5 +1,4 @@
 repositories {
-    mavenCentral()
     jcenter()
     flatDir {
         dirs '../libs'
@@ -12,7 +11,7 @@ apply plugin: 'com.android.application'
 
 project.group = 'com.mopub'
 project.description = '''MoPub Sample App'''
-project.version = '4.18.0'
+project.version = '4.20.0'
 
 android {
     compileSdkVersion 26
@@ -20,7 +19,7 @@ android {
     lintOptions { abortOnError false }
 
     defaultConfig {
-        versionCode 56
+        versionCode 58
         versionName version
         minSdkVersion 16
         targetSdkVersion 26
@@ -59,7 +58,10 @@ android {
 
 dependencies {
     implementation 'com.android.support:support-v4:26.1.0'
-    implementation 'com.google.android.gms:play-services-ads:9.4.0'
+    implementation 'com.google.android.gms:play-services-ads:11.4.0'
+    implementation 'com.google.android.gms:play-services-base:11.4.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-    api project(':mopub-sdk')
+    implementation project(':mopub-sdk')
+    implementation('com.mopub:libAvid-mopub:3.6.4')
+    implementation 'com.moat.analytics.mobile.mpub:moat-mobile-app-kit:2.1.0'
 }
