@@ -126,6 +126,8 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 				MoPubLog.d("Destroying a banner visibility tracker threw an exception", e);
 			}
 		}
+		
+		cancelTimeout();
 		mContext = null;
 		mCustomEventBanner = null;
 		mLocalExtras = null;
