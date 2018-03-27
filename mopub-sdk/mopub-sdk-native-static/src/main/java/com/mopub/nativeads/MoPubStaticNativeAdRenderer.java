@@ -63,7 +63,11 @@ public class MoPubStaticNativeAdRenderer implements MoPubAdRenderer<StaticNative
         Preconditions.checkNotNull(nativeAd);
         return nativeAd instanceof StaticNativeAd;
     }
-
+    
+    @Override
+    public void prepare(@NonNull View view, @NonNull BaseNativeAd nativeAd) {
+    }
+    
     private void update(@NonNull final StaticNativeViewHolder staticNativeViewHolder,
             @NonNull final StaticNativeAd staticNativeAd) {
         NativeRendererHelper.addTextView(staticNativeViewHolder.titleView,

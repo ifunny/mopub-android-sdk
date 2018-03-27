@@ -148,6 +148,7 @@ public class NativeAd {
 
     public void renderAdView(View view) {
         //noinspection unchecked
+        mMoPubAdRenderer.prepare(view, mBaseNativeAd);
         mMoPubAdRenderer.renderAdView(view, mBaseNativeAd);
     }
 
