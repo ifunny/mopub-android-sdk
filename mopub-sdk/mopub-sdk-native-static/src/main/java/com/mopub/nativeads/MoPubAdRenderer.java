@@ -52,4 +52,5 @@ public interface MoPubAdRenderer<T extends BaseNativeAd> {
     boolean supports(@NonNull BaseNativeAd nativeAd);
     
     void prepare(@NonNull View view, @NonNull BaseNativeAd nativeAd);
+    void clear(@NonNull BaseNativeAd nativeAd);
 }

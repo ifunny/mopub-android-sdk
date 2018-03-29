@@ -183,6 +183,7 @@ public class NativeAd {
             return;
         }
 
+        mMoPubAdRenderer.clear(mBaseNativeAd);
         mBaseNativeAd.clear(view);
     }
 
