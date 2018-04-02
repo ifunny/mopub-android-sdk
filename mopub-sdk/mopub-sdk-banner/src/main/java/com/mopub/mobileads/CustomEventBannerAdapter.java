@@ -257,6 +257,7 @@ public class CustomEventBannerAdapter implements CustomEventBannerListener {
 		cancelTimeout();
 		
 		if (mMoPubView != null) {
+			mMoPubView.setAdCreativeId(adCreativeIdBundle);
 			mMoPubView.nativeAdLoaded();
 			
 			// If visibility impression tracking is enabled for banners, fire all impression
