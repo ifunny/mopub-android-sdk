@@ -50,4 +50,7 @@ public interface MoPubAdRenderer<T extends BaseNativeAd> {
      * @return True if the renderer can render the native ad and false if it cannot.
      */
     boolean supports(@NonNull BaseNativeAd nativeAd);
+    
+    void prepare(@NonNull View view, @NonNull BaseNativeAd nativeAd);
+    void clear(@NonNull BaseNativeAd nativeAd);
 }
