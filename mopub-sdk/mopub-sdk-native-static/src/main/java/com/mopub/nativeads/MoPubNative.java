@@ -99,7 +99,7 @@ public class MoPubNative {
 
 		setBannedAdapters(bannedAdapters);
 
-		mContext = new WeakReference<Context>(context.getApplicationContext());
+		mContext = new WeakReference<>(context);
 		mAdUnitId = adUnitId;
 		mMoPubNativeNetworkListener = moPubNativeNetworkListener;
 		mAdRendererRegistry = adRendererRegistry;
