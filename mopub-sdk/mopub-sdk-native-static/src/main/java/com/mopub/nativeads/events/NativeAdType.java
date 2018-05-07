@@ -13,5 +13,6 @@ public enum NativeAdType {
 	AdtoApp,
 	Appodeal,
 	Mobfox,
-	MyTarget
+	MyTarget,
+	Amazon
 }
