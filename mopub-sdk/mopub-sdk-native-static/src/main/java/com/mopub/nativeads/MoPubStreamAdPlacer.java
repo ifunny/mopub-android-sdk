@@ -101,7 +101,7 @@ public class MoPubStreamAdPlacer {
      * wish to hard-code positions in your app, see {@link MoPubStreamAdPlacer(Context,
      * MoPubClientPositioning)}.
      *
-     * @param context The activity.
+     * @param context The context.
      */
     public MoPubStreamAdPlacer(@NonNull final Context context) {
         // MoPubClientPositioning is mutable, so we must take care not to hold a
@@ -111,7 +111,7 @@ public class MoPubStreamAdPlacer {
 
     /**
      * Creates a new MoPubStreamAdPlacer object, using server positioning.
-     *  @param context The activity.
+     *  @param context The context.
      * @param adPositioning A positioning object for specifying where ads will be placed in your
      * stream. See {@link MoPubNativeAdPositioning#serverPositioning()}.
      */
@@ -122,7 +122,7 @@ public class MoPubStreamAdPlacer {
 
     /**
      * Creates a new MoPubStreamAdPlacer object, using client positioning.
-     *  @param context The activity.
+     *  @param context The context.
      * @param adPositioning A positioning object for specifying where ads will be placed in your
      * stream. See {@link MoPubNativeAdPositioning#clientPositioning()}.
      */
@@ -137,7 +137,7 @@ public class MoPubStreamAdPlacer {
     MoPubStreamAdPlacer(@NonNull final Context context,
             @NonNull final NativeAdSource adSource,
             @NonNull final PositioningSource positioningSource) {
-        Preconditions.checkNotNull(context, "activity is not allowed to be null");
+        Preconditions.checkNotNull(context, "context is not allowed to be null");
         Preconditions.checkNotNull(adSource, "adSource is not allowed to be null");
         Preconditions.checkNotNull(positioningSource, "positioningSource is not allowed to be " +
                 "null");
@@ -378,7 +378,7 @@ public class MoPubStreamAdPlacer {
     /**
      * Destroys the ad placer, preventing it from future use.
      *
-     * You must call this method before the hosting activity for this class is destroyed in order to
+     * You must call this method before the hosting context for this class is destroyed in order to
      * avoid a memory leak. Typically you should destroy the adapter in the life-cycle method that
      * is counterpoint to the method you used to create the adapter. For example, if you created the
      * adapter in {@code Fragment#onCreateView} you should destroy it in {code
