@@ -248,6 +248,7 @@ public class AdViewController {
 
 		if (!isNetworkAvailable()) {
 			MoPubLog.d("Can't load an ad because there is no network connectivity.");
+			loadFailUrl(MoPubErrorCode.NO_CONNECTION);
 			scheduleRefreshTimerIfNetUnavaible();
 			return;
 		}
