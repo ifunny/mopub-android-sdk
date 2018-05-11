@@ -41,6 +41,7 @@ public abstract class TrackedStaticNativeAd extends StaticNativeAd {
 
 	@Override
 	public void destroy() {
+		super.destroy();
 		impressionTracker.destroy();
 	}
 

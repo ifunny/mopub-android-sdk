@@ -319,6 +319,7 @@ public class MoPubCustomEventNative extends CustomEventNative {
 
         @Override
         public void destroy() {
+            super.destroy();
             mImpressionTracker.destroy();
         }
 
