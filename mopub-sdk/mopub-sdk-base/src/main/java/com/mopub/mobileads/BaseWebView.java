@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.mobileads;
 
 import android.annotation.SuppressLint;
@@ -14,7 +15,7 @@ import android.webkit.WebView;
 
 import com.mopub.common.VisibleForTesting;
 import com.mopub.common.util.Views;
-import com.mopub.mobileads.util.WebViews;
+import com.mopub.common.util.WebViewUtils;import com.mopub.mobileads.util.WebViews;
 
 public class BaseWebView extends WebView {
     private static boolean sDeadlockCleared = false;
@@ -28,6 +29,8 @@ public class BaseWebView extends WebView {
         super(context.getApplicationContext());
 
         enablePlugins(false);
+        WebViewUtils.noCacheWebView(this);
+    
         restrictDeviceContentAccess();
         WebViews.setDisableJSChromeClient(this);
 
@@ -71,10 +74,6 @@ public class BaseWebView extends WebView {
     protected void enableJavascriptCaching() {
         getSettings().setJavaScriptEnabled(true);
         getSettings().setDomStorageEnabled(true);
-        getSettings().setAppCacheEnabled(true);
-        // Required for the Application Caches API to be enabled
-        // See: http://developer.android.com/reference/android/webkit/WebSettings.html#setAppCachePath(java.lang.String)
-        getSettings().setAppCachePath(getContext().getCacheDir().getAbsolutePath());
     }
 
     /*

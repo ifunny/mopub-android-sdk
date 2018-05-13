@@ -1,3 +1,4 @@
+//@formatter:off
 package com.mopub.mobileads;
 
 import android.content.Context;
@@ -10,7 +11,7 @@ import android.webkit.WebSettings;
 import com.mopub.common.AdReport;
 import com.mopub.common.Constants;
 import com.mopub.common.logging.MoPubLog;
-import com.mopub.network.Networking;
+import com.mopub.common.util.WebViewUtils;import com.mopub.network.Networking;
 
 import static com.mopub.mobileads.ViewGestureDetector.UserClickListener;
 
@@ -23,6 +24,7 @@ public class BaseHtmlWebView extends BaseWebView implements UserClickListener {
 
         disableScrollingAndZoom();
         getSettings().setJavaScriptEnabled(true);
+        WebViewUtils.noCacheWebView(this);
 
         mViewGestureDetector = new ViewGestureDetector(context, this, adReport);
         mViewGestureDetector.setUserClickListener(this);
