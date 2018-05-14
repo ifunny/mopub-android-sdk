@@ -23,6 +23,7 @@ import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.DeviceUtils;
 import com.mopub.common.util.Dips;
 import com.mopub.common.util.Utils;
+import com.mopub.common.util.WebViewUtils;
 import com.mopub.mobileads.events.AdCreativeIdBundle;
 import com.mopub.mraid.MraidNativeCommandHandler;
 import com.mopub.network.AdRequest;
@@ -591,6 +592,7 @@ public class AdViewController {
 					return;
 				}
 				moPubView.removeAllViews();
+				WebViewUtils.noCacheWebViewIn(view);
 				moPubView.addView(view, getAdLayoutParams(view));
 
 				if (showMarker && null != mAdResponse && mAdResponse.getMarkerOffset() != null) {
