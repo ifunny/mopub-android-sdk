@@ -33,7 +33,8 @@ public class MoPubCustomEventNative extends CustomEventNative {
             @NonNull final CustomEventNativeListener customEventNativeListener,
             @NonNull final Map<String, Object> localExtras,
             @NonNull final Map<String, String> serverExtras) {
-        super.loadNativeAd(context, customEventNativeListener, localExtras, serverExtras);
+        final Context applicationContext = context.getApplicationContext();
+        super.loadNativeAd(applicationContext, customEventNativeListener, localExtras, serverExtras);
         setCustomEventNativeListener(customEventNativeListener);
         setNativeAdType(NativeAdType.MoPub);
 
@@ -45,10 +46,10 @@ public class MoPubCustomEventNative extends CustomEventNative {
         }
 
         final MoPubStaticNativeAd moPubStaticNativeAd =
-                new MoPubStaticNativeAd(context,
+                new MoPubStaticNativeAd(applicationContext,
                         (JSONObject) json,
-                        new ImpressionTracker(context),
-                        new NativeClickHandler(context),
+                        new ImpressionTracker(applicationContext),
+                        new NativeClickHandler(applicationContext),
                         this);
 
         if (serverExtras.containsKey(DataKeys.IMPRESSION_MIN_VISIBLE_PERCENT)) {
