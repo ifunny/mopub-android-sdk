@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.mopub.common.Preconditions;
 import com.mopub.common.logging.MoPubLog;
-import com.mopub.nativeads.events.NativeAdEventsObserver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +64,11 @@ public abstract class BaseNativeAd {
 	 * <p/>
 	 * This method is optional.
 	 */
-	public abstract void destroy();
+	@CallSuper
+	public void destroy() {
+		mNativeEventListener = null;
+		eventNative = null;
+	}
 
 	@CallSuper
 	protected void loadAd(){

@@ -49,15 +49,16 @@ public class NativeAd {
         void onImpression(final View view);
         void onClick(final View view);
     }
-
-    @NonNull private final Context mContext;
-    @NonNull private final BaseNativeAd mBaseNativeAd;
-    @NonNull private final MoPubAdRenderer mMoPubAdRenderer;
+    
     @NonNull private final Set<String> mImpressionTrackers;
     @NonNull private final Set<String> mClickTrackers;
     @NonNull private final String mAdUnitId;
     @Nullable private MoPubNativeEventListener mMoPubNativeEventListener;
 
+    private Context mContext;
+    private MoPubAdRenderer mMoPubAdRenderer;
+    private BaseNativeAd mBaseNativeAd;
+    
     private boolean mRecordedImpression;
     private boolean mIsClicked;
     private boolean mIsDestroyed;
@@ -197,6 +198,12 @@ public class NativeAd {
         }
 
         mBaseNativeAd.destroy();
+        mBaseNativeAd = null;
+        
+        mMoPubNativeEventListener = null;
+        mContext = null;
+        mMoPubAdRenderer = null;
+        
         mIsDestroyed = true;
     }
 
