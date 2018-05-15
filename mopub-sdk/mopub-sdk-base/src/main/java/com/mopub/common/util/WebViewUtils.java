@@ -9,8 +9,12 @@ public class WebViewUtils {
 	public static void noCacheWebView(WebView webView) {
 		WebSettings settings = webView.getSettings();
 		settings.setDomStorageEnabled(true);
+		settings.setLoadWithOverviewMode(true);
+		settings.setUseWideViewPort(true);
+		settings.setSupportZoom(false);
+		settings.setBuiltInZoomControls(false);
+		settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 		settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-		settings.setAppCacheEnabled(false);
 	}
 	
 	public static void noCacheWebViewIn(View root) {

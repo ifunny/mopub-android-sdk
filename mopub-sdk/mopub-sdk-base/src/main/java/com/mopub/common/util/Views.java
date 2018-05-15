@@ -77,7 +77,7 @@ public class Views {
 	
 	@Nullable
 	public static <T> T findView(View root, Class<T> tClazz) {
-		if (root.getClass().equals(tClazz)) {
+		if (tClazz.isInstance(root)) {
 			return (T) root;
 		}
 		if (root instanceof ViewGroup) {
