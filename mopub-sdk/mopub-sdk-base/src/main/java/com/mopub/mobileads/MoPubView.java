@@ -374,6 +374,14 @@ public class MoPubView extends FrameLayout {
         return (mAdViewController != null) ? mAdViewController.getAdUnitId() : null;
     }
 
+    public void setKeywords(String keywords) {
+        if (mAdViewController != null) mAdViewController.setKeywords(keywords);
+    }
+
+    public String getKeywords() {
+        return (mAdViewController != null) ? mAdViewController.getKeywords(): null;
+    }
+
     public void setUserDataKeywords(String userDataKeywords) {
         if (mAdViewController != null && MoPub.canCollectPersonalInformation()) {
             mAdViewController.setUserDataKeywords(userDataKeywords);
