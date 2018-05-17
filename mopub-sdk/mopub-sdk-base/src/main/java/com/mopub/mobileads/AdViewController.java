@@ -16,9 +16,9 @@ import android.widget.FrameLayout;
 import com.mopub.common.AdReport;
 import com.mopub.common.ClientMetadata;
 import com.mopub.common.Constants;
+import com.mopub.common.MoPub;
 import com.mopub.common.Preconditions;
 import com.mopub.common.VisibleForTesting;
-import com.mopub.common.event.BaseEvent;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.DeviceUtils;
 import com.mopub.common.util.Dips;
@@ -99,6 +99,7 @@ public class AdViewController {
 	private boolean mShouldAllowAutoRefresh = true;
 
 	private String mKeywords;
+	private String mUserDataKeywords;
 	private Location mLocation;
 	private boolean mIsTesting;
 	private boolean mAdWasLoaded;
@@ -329,13 +330,35 @@ public class AdViewController {
 		mKeywords = keywords;
 	}
 
-	public Location getLocation() {
-		return mLocation;
-	}
+    public String getUserDataKeywords() {
+        if (!MoPub.canCollectPersonalInformation()) {
+            return null;
+        }
+        return mUserDataKeywords;
+    }
 
-	public void setLocation(Location location) {
-		mLocation = location;
-	}
+    public void setUserDataKeywords(String userDataKeywords) {
+        if (!MoPub.canCollectPersonalInformation()) {
+            mUserDataKeywords = null;
+            return;
+        }
+        mUserDataKeywords = userDataKeywords;
+    }
+
+    public Location getLocation() {
+        if (!MoPub.canCollectPersonalInformation()) {
+            return null;
+        }
+        return mLocation;
+    }
+
+    public void setLocation(Location location) {
+        if (!MoPub.canCollectPersonalInformation()) {
+            mLocation = null;
+            return;
+        }
+        mLocation = location;
+    }
 
 	public String getAdUnitId() {
 		return mAdUnitId;
@@ -469,20 +492,20 @@ public class AdViewController {
 		return mTimeoutMilliseconds;
 	}
 
-	void trackImpression() {
-		if (mAdResponse != null) {
-			TrackingRequest.makeTrackingHttpRequest(mAdResponse.getImpressionTrackingUrl(),
-					mContext, BaseEvent.Name.IMPRESSION_REQUEST);
-		}
-	}
+    void trackImpression() {
+        if (mAdResponse != null) {
+            TrackingRequest.makeTrackingHttpRequest(mAdResponse.getImpressionTrackingUrl(),
+                    mContext);
+        }
+    }
 
-	void registerClick() {
-		if (mAdResponse != null) {
-			// Click tracker fired from Banners and Interstitials
-			TrackingRequest.makeTrackingHttpRequest(mAdResponse.getClickTrackingUrl(),
-					mContext, BaseEvent.Name.CLICK_REQUEST);
-		}
-	}
+    void registerClick() {
+        if (mAdResponse != null) {
+            // Click tracker fired from Banners and Interstitials
+            TrackingRequest.makeTrackingHttpRequest(mAdResponse.getClickTrackingUrl(),
+                    mContext);
+        }
+    }
 
 	void fetchAd(String url) {
 		MoPubView moPubView = getMoPubView();
@@ -508,14 +531,22 @@ public class AdViewController {
 		loadAd();
 	}
 
-	@Nullable
-	String generateAdUrl() {
-		return mUrlGenerator == null ? null : mUrlGenerator
-				.withAdUnitId(mAdUnitId)
-				.withKeywords(mKeywords)
-				.withLocation(mLocation)
-				.generateUrlString(Constants.HOST);
-	}
+    @Nullable
+    String generateAdUrl() {
+        if (mUrlGenerator == null) {
+            return null;
+        }
+
+        final boolean canCollectPersonalInformation = MoPub.canCollectPersonalInformation();
+
+        mUrlGenerator
+                .withAdUnitId(mAdUnitId)
+                .withKeywords(mKeywords)
+                .withUserDataKeywords(canCollectPersonalInformation ? mUserDataKeywords : null)
+                .withLocation(canCollectPersonalInformation ? mLocation : null);
+
+        return mUrlGenerator.generateUrlString(Constants.HOST);
+    }
 
 	void adDidFail(MoPubErrorCode errorCode) {
 		MoPubLog.i("Ad failed to load.");
